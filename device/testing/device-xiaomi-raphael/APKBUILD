@@ -3,14 +3,14 @@ maintainer=""
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=6
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
 _carch="arm64"
 options="!check !archcheck"
 depends="
-	linux-xiaomi-raphael
+	linux-postmarketos-qcom-sm8150
 	mkbootimg
 	postmarketos-base
 	mesa-vulkan-freedreno

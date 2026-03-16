@@ -9,14 +9,16 @@ IP_ADDRESS_SERVER=172.16.42.1
 IP_ADDRESS_CLIENT=172.16.42.2
 CONNECTION_NAME="USB Developer Mode"
 
+# Bring interface and NetworkManager connection up
 up() {
-    # Bring interface and NetworkManager connection up
     nmcli connection add con-name "$CONNECTION_NAME" type ethernet \
         ifname "$IFACE" ipv4.method manual ipv4.addresses "$IP_ADDRESS_SERVER"/16
-    nmcli connection up "$CONNECTION_NAME"
 
-    # Start DHCP server
-    unudhcpd -i "$IFACE" -s "$IP_ADDRESS_SERVER" -c "$IP_ADDRESS_CLIENT" &
+    (
+        udevadm wait /sys/class/net/"$IFACE"
+        nmcli connection up "$CONNECTION_NAME"
+        unudhcpd -i "$IFACE" -s "$IP_ADDRESS_SERVER" -c "$IP_ADDRESS_CLIENT"
+    ) &
 }
 
 down() {

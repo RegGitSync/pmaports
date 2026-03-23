@@ -1,8 +1,8 @@
 maintainer="Antoine Martin (ayakael) <dev@ayakael.net>"
 pkgname=device-pine64-pinenote
 pkgdesc="Pine64 PineNote"
-pkgver=11
-pkgrel=1
+pkgver=12
+pkgrel=0
 _commit="28d2c05ab4e80a7972611cd3188f3e8be4197f6a"
 url="https://postmarketos.org"
 license="GPL-3.0-only"
@@ -10,7 +10,7 @@ arch="aarch64"
 options="!check !archcheck"
 # py3-numpy used by rockchip_ebc management libraries
 depends="
-	linux-pine64-pinenote
+	linux-postmarketos-rockchip
 	postmarketos-base
 	py3-numpy
 	systemd-boot
@@ -30,6 +30,7 @@ source="
 	deviceinfo
 	kernel-cmdline.conf
 	modules-initfs
+	modules-load.conf
 	partition-table.txt
 
 	pinenote-init-waveform.initd
@@ -283,6 +284,7 @@ sha512sums="
 cd6d7bfa3881e299c911d17db676f974f00e4e63e37101da5e0bfae90458305d0638637444f2f4df42121316efd883e4a062d1e12f4c549d9d86200fd39ac85d  deviceinfo
 3a229912fad5d6aa8942fa987872cb0141c064f4bbbed813e9bcd0594ee4bdbf7c8715becb9e071c66ccd5f8b01cb8676686d8cdcf99b7a1f1abb1c9de38f7d4  kernel-cmdline.conf
 e0d3ac808e7a4f05df327a824e30dc54864908e31f4a643f6e85f054ab812eeb28fef647eb52ae85bfad7d40c9cd81c43c1cdc575de5dbc04304d74862d9772c  modules-initfs
+368b2a2a5575f481a5962da2abfa87e85a8c79ecc68166eaabc650f893b06b09acf5b1c83001ca15441082f5a9c802a7298aeec1e008cbef68c3863d250244cd  modules-load.conf
 df0565391a66eed53ed817d3d1415bef000f9ed33ef2e8aa3016be3ecc21dd4a357e57838979d2710256776666dc01bfee8bf8a95b08a20a62d46cfbd8ac6c35  partition-table.txt
 29710d80112f8797adf7e3dfd54771d8752d29cb265532e235fe406e380056ac846929568ddbe5110bbd74da337e2f8cd905e4092c14bc94aea07dc83f39aa6e  pinenote-init-waveform.initd
 8f7a5ad2f407de8c474d54dfdb9cc099c96e8918fc123f8b2a8ff911d7e1c7ca6fe30f9cea8ee2f0c1ba5f3e53359193d0683ca912f0b66e79a12814ce38dd98  30-eink-waveform.files

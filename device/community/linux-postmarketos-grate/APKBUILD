@@ -43,7 +43,7 @@ prepare() {
 
 build() {
 	unset LDFLAGS
-	make tegra_csi_defconfig
+	make ARCH="$_carch" LLVM=1 tegra_csi_defconfig
 	make ARCH="$_carch" LLVM=1 \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }

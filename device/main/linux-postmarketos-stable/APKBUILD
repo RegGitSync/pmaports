@@ -2,7 +2,7 @@
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-stable
 pkgver=6.19.11
-pkgrel=0
+pkgrel=1
 _kver=${pkgver%.*}
 pkgdesc="Stable Kernel"
 # armhf: pmbootstrap cannot dynamically choose a defconfig, so it ends up using multi_v7_defconfig which isn't correct
@@ -27,6 +27,7 @@ makedepends="
 	bison
 	clang
 	clang-libclang
+	devicepkg-dev
 	diffutils
 	elfutils-dev
 	findutils
@@ -89,7 +90,7 @@ esac
 
 prepare() {
 	default_prepare
-	cp "$srcdir/config-$_flavor.$CARCH" .config
+	. kernel_prepare
 }
 
 build() {
@@ -99,24 +100,7 @@ build() {
 }
 
 package() {
-	local _install
-	case "$CARCH" in
-		arm*|aarch64|riscv*) _install="zinstall dtbs_install" ;;
-		*) _install="install" ;;
-	esac
-
-	make modules_install $_install \
-		ARCH="$_carch" \
-		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
-		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
-
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
-
-	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+	kernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
 }
 
 sha512sums="

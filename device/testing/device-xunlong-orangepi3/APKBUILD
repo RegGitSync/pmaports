@@ -1,9 +1,8 @@
 # Reference: <https://postmarketos.org/devicepkg>
-# Co-Maintainer: exkc <exkc@exkc.moe>
 maintainer="Maxim Karasev <begs@disroot.org>"
 pkgname=device-xunlong-orangepi3
 pkgdesc="Xunlong Orange Pi 3"
-pkgver=4
+pkgver=5
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"

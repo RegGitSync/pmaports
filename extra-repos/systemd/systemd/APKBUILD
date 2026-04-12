@@ -7,9 +7,9 @@
 
 maintainer="Clayton Craft <craftyguy@postmarketos.org>"
 pkgname=systemd
-pkgver=259.5
+pkgver=260.1
 _pkgver="${pkgver/_/-}"
-pkgrel=0
+pkgrel=3
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 # armhf: no linux-stable
@@ -37,7 +37,6 @@ makedepends="
 	audit-dev
 	bash
 	bash-completion
-	bpftool
 	clang
 	cmake
 	coreutils
@@ -48,7 +47,6 @@ makedepends="
 	gperf
 	kmod-dev
 	libapparmor-dev
-	libbpf-dev
 	libbz2
 	libcap-dev
 	libfido2-dev
@@ -95,7 +93,6 @@ depends="
 	kmod-libs
 	libapparmor
 	libblkid
-	libbpf
 	libcap2
 	libdw
 	libelf
@@ -160,6 +157,11 @@ subpackages="
 source="$pkgname-$pkgver.tar.gz::https://github.com/systemd/systemd/archive/refs/tags/v$_pkgver.tar.gz
 	wired.network
 	bless-boot.patch
+
+	41416.patch
+	41418.patch
+	41419.patch
+	41483.patch
 	"
 builddir="$srcdir/systemd-$_pkgver"
 
@@ -207,6 +209,7 @@ build() {
 		-Dpam=enabled \
 		-Dpamlibdir=/usr/lib/security \
 		-Dpamconfdir=/usr/lib/pam.d \
+		-Dinstall-sysconfdir=false \
 		\
 		-Dsysupdate=enabled \
 		-Dsysupdated=enabled \
@@ -220,6 +223,9 @@ build() {
 		\
 		-Dhomed=disabled \
 		-Duserdb=false \
+		\
+		-Dstatic-libsystemd=true \
+		-Dstatic-libudev=true \
 		\
 		-Dman=enabled \
 		-Dhtml=disabled \
@@ -240,7 +246,7 @@ build() {
 		-Ddns-servers="9.9.9.10#dns10.quad9.net 149.112.112.10#dns10.quad9.net 2620:fe::10#dns10.quad9.net 2620:fe::fe:10#dns10.quad9.net" \
 		-Dntp-servers="0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 4.pool.ntp.org" \
 		\
-		-Dbpf-framework=enabled \
+		-Dbpf-framework=disabled\
 		-Dvmlinux-h=provided \
 		-Dvmlinux-h-path="$(find /usr/src -path "/usr/src/linux-headers-*-stable/vmlinux.h" | sort -V | tail -n1)" \
 		build .
@@ -267,6 +273,10 @@ package() {
 
 	DESTDIR="$pkgdir" meson install --no-rebuild -C build
 
+
+	# NOTE: Uncomment to print dlopened dependencies and crash the build:
+	# _dump_dlopen_metadata "$pkgdir" | _extract_sonames | _resolve_packages; exit 1
+
 	# ship default policy to leave services disabled
 	for type in system user; do
 		mkdir -p "$pkgdir"/usr/lib/systemd/"$type"-preset
@@ -290,7 +300,6 @@ udevd() {
 	provides="eudev udev eudev-libs"
 	provider_priority=100
 
-	amove etc/udev
 	amove usr/bin/udevadm
 	amove usr/lib/libudev*
 	amove usr/lib/systemd/system/sockets.target.wants/systemd-udev*
@@ -319,11 +328,11 @@ timesyncd() {
 	pkgdesc="systemd Time Synchronization"
 	depends="$pkgname=$pkgver-r$pkgrel"
 
-	amove etc/systemd/timesyncd.conf
 	amove usr/bin/timedatectl
 	amove usr/lib/systemd/ntp-units.d/80-systemd-timesync.list
 	amove usr/lib/systemd/systemd-timesyncd
 	amove usr/lib/systemd/system/systemd-timesyncd.service
+	amove usr/lib/sysusers.d/systemd-timesync.conf
 	amove usr/share/dbus-1/system-services/org.freedesktop.timesync1.service
 	amove usr/share/dbus-1/system.d/org.freedesktop.timesync1.conf
 	amove usr/share/polkit-1/actions/org.freedesktop.timesync1.policy
@@ -342,8 +351,6 @@ networkd() {
 	depends="$pkgname=$pkgver-r$pkgrel"
 
 	amove usr/bin/networkctl
-	amove etc/systemd/network
-	amove etc/systemd/networkd.conf
 	amove usr/share/polkit-1/rules.d/systemd-networkd.rules
 	amove usr/lib/systemd/systemd-networkd
 	amove usr/lib/systemd/systemd-networkd-wait-online
@@ -351,6 +358,7 @@ networkd() {
 	amove usr/lib/systemd/system/systemd-networkd.service
 	amove usr/lib/systemd/system/systemd-networkd.socket
 	amove usr/lib/systemd/system/systemd-networkd-wait-online.service
+	amove usr/lib/sysusers.d/systemd-network.conf
 	amove usr/share/dbus-1/interfaces/org.freedesktop.network1.DHCPServer.xml
 	amove usr/share/dbus-1/interfaces/org.freedesktop.network1.Link.xml
 	amove usr/share/dbus-1/interfaces/org.freedesktop.network1.Manager.xml
@@ -376,12 +384,13 @@ resolved() {
 	replaces="resolvconf"
 	provides="resolvconf"
 
-	amove etc/systemd/resolved.conf
+	amove usr/bin/resolvectl
 	amove usr/sbin/resolvconf
+	amove usr/bin/systemd-resolve
+	amove usr/lib/systemd/resolv.conf
 	amove usr/lib/systemd/system/systemd-resolved.service
 	amove usr/lib/systemd/systemd-resolved
-	amove usr/bin/resolvectl
-	amove usr/bin/systemd-resolve
+	amove usr/lib/sysusers.d/systemd-resolve.conf
 	amove usr/lib/tmpfiles.d/systemd-resolve.conf
 	amove usr/share/dbus-1/interfaces/org.freedesktop.resolve1*
 	amove usr/share/dbus-1/system-services/org.freedesktop.resolve1.service
@@ -410,8 +419,8 @@ logind() {
 	provider_priority=100
 
 	amove usr/bin/loginctl
-	amove etc/systemd/logind.conf
 	amove usr/lib/systemd/systemd-logind
+	amove usr/lib/systemd/system/systemd-logind-varlink.socket
 	amove usr/lib/systemd/system/systemd-logind.service
 
 	amove usr/lib/systemd/system/dbus-org.freedesktop.login1.service
@@ -435,11 +444,10 @@ journald() {
 	# is a dependency of systemd
 
 	amove usr/bin/journalctl
-	amove etc/systemd/journal-remote.conf
-	amove etc/systemd/journald.conf
 	amove usr/lib/systemd/system/sockets.target.wants/systemd-journal*
 	amove usr/lib/systemd/system/systemd-journal*
 	amove usr/lib/systemd/systemd-journal*
+	amove usr/lib/sysusers.d/systemd-journal.conf
 	amove usr/lib/tmpfiles.d/journal-nocow.conf
 	amove var/log/journal
 }
@@ -456,7 +464,7 @@ x11() {
 	pkgdesc="systemd x11"
 	install_if="$pkgname=$pkgver-r$pkgrel xorg-server-common"
 
-	amove etc/X11/xinit/xinitrc.d/50-systemd-user.sh
+	amove usr/lib/tmpfiles.d/x11.conf
 }
 
 dev() {
@@ -472,8 +480,53 @@ libs() {
 	default_libs
 }
 
+# Scan for dlopened dependencies
+_dump_dlopen_metadata() {
+	mkdir -p "$pkgbasedir/.dlopen-metadata-tmp"
+	mkdir -p "$pkgbasedir/.dlopen-metadata"
+	scanelf -RyB -E ET_DYN --section '.note.dlopen' "$pkgdir" | while read type section src; do
+		[ "$section" != ".note.dlopen" ] && continue
+
+		section_data="$(readelf -j .note.dlopen "$src")"
+		local filename="${src##*/}"
+		if [ -e "$pkgbasedir/.dlopen-metadata/$filename" ]; then
+			error "filename reused, cannot handle this yet: $filename"
+		fi
+		readelf -j .note.dlopen "$src" | tee "$pkgbasedir/.dlopen-metadata/$filename"
+		local tmp="$pkgbasedir/.dlopen-metadata-tmp/$filename"
+		strip --remove-section=.note.dlopen -o "$tmp" "$src"
+		# only replace content to preserve attributes
+		cat "$tmp" > "$src"
+		rm "$tmp"
+	done
+
+	rm -r "$pkgbasedir/.dlopen-metadata-tmp"
+}
+
+# Extract sonames from readelf output
+_extract_sonames() {
+	grep 'Dlopen Metadata:' | \
+	sed 's/.*"soname":\[//' | \
+	sed 's/\].*//' | \
+	tr ',' '\n' | \
+	sed 's/"//g' | \
+	sort -u
+}
+
+# Resolve each soname to package
+_resolve_packages() {
+	while read -r soname; do
+		apk search "so:$soname" 2>/dev/null || true
+	done | sed 's/-[0-9].*//' | sort -u
+}
+
+
 sha512sums="
-cb76b3a11b400fea94de2be74bcd9178b2e986c1965cbc19824114fe14fdd9b6aed43ae325cf5bc505efa1333adc71e131e0a8b54519e6741baa090392bf0a98  systemd-259.5.tar.gz
+9f975dce6861853a817a7ceab18a24449a85d1bda6939b3a5173430c02a4d8a9a2b34ebb8cce1c51db9b0ff9078fcc65da7b0f44e3bdcbbe013b9e04bb6f0ff9  systemd-260.1.tar.gz
 81c897fed8a3fbfb67ec591b2398a5d65e4af1b3ef379376c157c98d71f085b707f8ebc896d5571a94f99f8fc84fd6b43e3b879ca9b0d57fc6c4596034c7a777  wired.network
 8b0360acd46f8918ccaf4bcfbf8b2e60ba0d1d6ea6c575fa51668e129b421edc3e7503db7790b6abce8d926b6c8493c02893f70eb481e3fdd935c7b90f442474  bless-boot.patch
+c33c552c6b8c74d3c15f339ec0ebc6d179022f18ba13d8524ce22e9311deb4bbba369a3a737222c9954817398c44998f3169f7f55122d6ee7b96f7d3fd6bcc78  41416.patch
+ca2f3a1326b3367aef0c1961c6dbbce0659b81ef39a0a546db69129b2edeba2f5141a663ae0d926bca96d7a9d1d09c7d840c63165f317f778a489b44f9b431c6  41418.patch
+394fb47e88f5ae766ffcb226bd55df25771e45099ba3cbed6b034e9a36a77a13029d24b2e2f27ef6624f6dfb87f1165da4654d4043fe8b88bcd34d81f786f902  41419.patch
+cb564eec45452df51eb8cbca8f8f92f1715d20867ac156c4b3d9b453862a328b8bde98948978d8de05e9c3e49a6c21b3bc5c0a128273b6d814a435ad7bd41d5c  41483.patch
 "

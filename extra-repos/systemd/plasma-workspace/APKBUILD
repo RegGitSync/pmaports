@@ -1,7 +1,7 @@
 # Forked from Alpine to add systemd!
-maintainer="Bart Ribbers <bribbers@disroot.org>"
+maintainer="team/kde <bribbers@disroot.org>"
 pkgname=plasma-workspace
-_pkgver=6.6.2
+_pkgver=6.6.4
 pkgver=9999$_pkgver
 pkgrel=0
 pkgdesc="KDE Plasma Workspace"
@@ -208,5 +208,5 @@ x11() {
 }
 
 sha512sums="
-a0e4d7eaf93d752660b6af9208653a73e9ca9ce121fac90c21f72391c370b8f69c8ca6dfa539298a1335384f2fb56cc33f95aff74d0c1840e8a30644481da95d  plasma-workspace-6.6.2.tar.xz
+52040f299962d5471c32a30e5d27c739608fe677bd262c5ec9377044c5dddd41629521a825214a33fc20e16c2e0d1737e6c5ef5fdc722fb13665721d8117be9a  plasma-workspace-6.6.4.tar.xz
 "

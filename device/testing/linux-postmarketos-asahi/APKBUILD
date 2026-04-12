@@ -1,6 +1,6 @@
 maintainer="Clayton Craft <clayton@craftyguy.net>"
 pkgname=linux-postmarketos-asahi
-pkgver=6.18.15_p1
+pkgver=6.19.11_p1
 pkgrel=0
 _rel=${pkgver#*_p}
 _kver=${pkgver%_p*}
@@ -88,7 +88,7 @@ package() {
 }
 
 sha512sums="
-962e8b98faf4f9ca14a48460371d4587dd68ecec5ed6dbbda52ccb36793a48d9021640be38154dc51cf8096ef4eb592e58c40649a38c3fc082fb67d19596b511  linux-postmarketos-asahi-6.18.15-1.tar.gz
-65735b7f1a98e9a82371de5620d0c145f52916815696533ea77de12c811a250a187aa4e3514962f192c8b7ff7469e68adf64410cffbe031e9b874a3548bf4f4a  config-postmarketos-asahi.aarch64
+7e988816c32db58f3eaeb117266c6ddecbde96c4e80d55a41c515bd69261bbd1b006a8fcb049dbf90efbeb5670472151ffbb4c76cb1c9fe1c64990e249daa08c  linux-postmarketos-asahi-6.19.11-1.tar.gz
+98b9d666f0a75d66fb18bbb5316483c300ab3c5ebcf054cd7ec31cbaa419ee700356c576ac1ccd670ae3b6e330854e05a729c4563590d1a15ae1c57160352bb2  config-postmarketos-asahi.aarch64
 8d205300cfabe192b53ed1cc644b087e76421eb973e1b2a31d657e4f2676badebdfcf6b0865569c43b4b904935435f6e729c3a8d4a6221fb5792e40ec1017a0f  0001-nvmem-apple-spmi-nvmem-Fix-CFI-failures.patch
 "

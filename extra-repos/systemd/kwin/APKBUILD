@@ -1,9 +1,9 @@
 # Forked from Alpine to add systemd!
-maintainer="Bart Ribbers <bribbers@disroot.org>"
+maintainer="team/kde <bribbers@disroot.org>"
 pkgname=kwin
-_pkgver=6.6.2
+_pkgver=6.6.4
 pkgver=9999$_pkgver
-pkgrel=0
+pkgrel=1
 pkgdesc="An easy to use, but flexible, composited Window Manager"
 # armhf blocked by qt6-qtdeclarative
 arch="all !armhf"
@@ -123,5 +123,5 @@ package() {
 	DESTDIR="$pkgdir" cmake --install build
 }
 sha512sums="
-88cba158d4e676ff72d1e6ba3c13f895f688aa4cd69d371a7d1b64b375999a935e86dd2dd8cf1cf4d470dd6f31cdaa52a7a10981624a3dcb438b490e73141019  kwin-6.6.2.tar.xz
+63624ca5705d58ca4efef012ce67ace7ce5c5e2a393f2984d107fe0beb6548d26941b777ae08692cccf2c192ada34e143222775206a1f54ac9c8f3477efcf5f4  kwin-6.6.4.tar.xz
 "

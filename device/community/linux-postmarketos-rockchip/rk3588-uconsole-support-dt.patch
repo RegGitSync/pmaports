@@ -1,0 +1,136 @@
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-radxa-cm5-uconsole.dts.orig b/arch/arm64/boot/dts/rockchip/rk3588s-radxa-cm5-uconsole.dts
+index d9451db..40641a0 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-radxa-cm5-uconsole.dts.orig
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-radxa-cm5-uconsole.dts
+@@ -99,65 +99,6 @@ ocp8178_backlight: backlight@0 {
+ 	};
+ };
+ 
+-&i2c8 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	pinctrl-0 = <&i2c8m2_xfer>;
+-	pinctrl-names = "default";
+-	status = "okay";
+-	axp22x: pmic@34 {
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		compatible = "x-powers,axp221";
+-		reg = <0x34>; /* i2c address */
+-		interrupt-parent = <&gpio0>;
+-		interrupts = <RK_PD0 IRQ_TYPE_EDGE_FALLING>;
+-
+-		regulators {
+-			x-powers,dcdc-freq = <3000>;
+-			reg_aldo1: aldo1 {
+-				regulator-always-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-name = "audio-vdd";
+-			};
+-			reg_aldo2: aldo2 {
+-				regulator-always-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-name = "display-vcc";
+-			};
+-				reg_dldo2: dldo2 {
+-				regulator-always-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-name = "dldo2";
+-			};
+-				reg_dldo3: dldo3 {
+-				regulator-always-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-name = "dldo3";
+-			};
+-				reg_dldo4: dldo4 {
+-				regulator-always-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-name = "dldo4";
+-			};
+-		};
+-
+-		battery_power_supply: battery-power-supply {
+-			compatible = "x-powers,axp221-battery-power-supply";
+-			monitored-battery = <&battery>;
+-		};
+-
+-		ac_power_supply: ac_power_supply {
+-			compatible = "x-powers,axp221-ac-power-supply";
+-		};
+-	};
+-};
+-
+ &hdmi0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&hdmim0_tx0_cec
+@@ -216,6 +157,65 @@ pcf85063: pcf85063@51 {
+ 
+ };
+ 
++&i2c8 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c8m2_xfer>;
++	status = "okay";
++
++	axp22x: pmic@34 {
++		interrupt-controller;
++		#interrupt-cells = <1>;
++		compatible = "x-powers,axp221";
++		reg = <0x34>; /* i2c address */
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PD0 IRQ_TYPE_EDGE_FALLING>;
++
++		regulators {
++			x-powers,dcdc-freq = <3000>;
++			reg_aldo1: aldo1 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "audio-vdd";
++			};
++			reg_aldo2: aldo2 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "display-vcc";
++			};
++			reg_dldo2: dldo2 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "dldo2";
++			};
++			reg_dldo3: dldo3 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "dldo3";
++			};
++			reg_dldo4: dldo4 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "dldo4";
++			};
++		};
++
++		battery_power_supply: battery-power-supply {
++			compatible = "x-powers,axp221-battery-power-supply";
++			monitored-battery = <&battery>;
++		};
++
++		ac_power_supply: ac_power_supply {
++			compatible = "x-powers,axp221-ac-power-supply";
++		};
++	};
++};
++
++
+ &i2s5_8ch {
+ 	status = "okay";
+ };

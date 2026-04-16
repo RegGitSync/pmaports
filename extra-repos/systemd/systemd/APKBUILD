@@ -234,7 +234,7 @@ build() {
 		-Dsystem-alloc-gid-min=101 \
 		-Dsystem-uid-max=999 \
 		-Dsystem-gid-max=999 \
-		-Dwheel-group=true \
+		-Dwheel-group=false \
 		-Dnobody-user=nobody \
 		-Dnobody-group=nobody \
 		\

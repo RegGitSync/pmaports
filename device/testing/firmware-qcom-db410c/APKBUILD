@@ -1,26 +1,25 @@
 maintainer="Nikita Travkin <nikita@trvn.ru>"
 pkgname=firmware-qcom-db410c
 pkgver=1036.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Firmware for DragonBoard 410c"
 url="https://releases.linaro.org/96boards/dragonboard410c/qualcomm/firmware/"
+arch="aarch64 armv7"
+license="custom"
+makedepends="mtools pil-squasher"
 subpackages="
 	$pkgname-doc
 	$pkgname-wcnss-nv:wcnss_nv
 	$pkgname-modem
 	$pkgname-venus
 "
-arch="aarch64 armv7"
-license="custom"
-options="!check !strip !archcheck !tracedeps pmb:cross-native"
-makedepends="mtools pil-squasher"
 source="https://releases.linaro.org/96boards/dragonboard410c/qualcomm/firmware/linux-board-support-package-r$pkgver.zip"
+options="!archcheck !check !strip !spdx !tracedeps pmb:cross-native"
 builddir="$srcdir/linux-board-support-package-r$pkgver"
 
 # This package is a replacement for linux-firmware-qcom (packaging only necessary
 # firmware plus some missing ones), so it's packaged in /qcom, not /postmarketos.
 replaces="linux-firmware-qcom"
-_fwdir="/lib/firmware/qcom"
 
 unpack() {
 	default_unpack
@@ -36,14 +35,25 @@ build() {
 }
 
 package() {
-	install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-	install -Dm644 NOTICE.txt "$pkgdir"/usr/share/licenses/$pkgname/NOTICE
+	install -Dm644 LICENSE \
+		-t "$pkgdir"/usr/share/licenses/"$pkgname"/
+	install -Dm644 NOTICE.txt \
+		-t "$pkgdir"/usr/share/licenses/"$pkgname"/
+	install -Dm644 mba.mbn \
+		-t "$pkgdir"/usr/lib/firmware/qcom/apq8016/
+	install -Dm644 modem.mbn \
+		-t "$pkgdir"/usr/lib/firmware/qcom/apq8016/
+	install -Dm644 proprietary-linux/wlan/prima/WCNSS_qcom_wlan_nv.bin \
+		-t "$pkgdir"/usr/lib/firmware/qcom/apq8016/
+	install -Dm644 venus.mbn \
+		-t "$pkgdir"/usr/lib/firmware/qcom/venus-1.8/
 }
 
 modem() {
 	pkgdesc="DragonBoard 410c modem firmware"
-	install -Dm644 "$builddir"/mba.mbn -t "$subpkgdir/$_fwdir"/apq8016/
-	install -Dm644 "$builddir"/modem.mbn -t "$subpkgdir/$_fwdir"/apq8016/
+
+	amove usr/lib/firmware/qcom/apq8016/mba.mbn
+	amove usr/lib/firmware/qcom/apq8016/modem.mbn
 }
 
 # For some reason the wcnss firmware in r1036.1 is actually older than the one
@@ -51,8 +61,7 @@ modem() {
 
 wcnss_nv() {
 	pkgdesc="DragonBoard 410c WiFi/BT firmware configuration"
-	install -Dm644 "$builddir"/proprietary-linux/wlan/prima/WCNSS_qcom_wlan_nv.bin \
-		"$subpkgdir/$_fwdir"/apq8016/WCNSS_qcom_wlan_nv_sbc.bin
+	amove usr/lib/firmware/qcom/apq8016/WCNSS_qcom_wlan_nv_sbc.bin
 }
 
 venus() {
@@ -65,8 +74,8 @@ venus() {
 	# Linux detects squashed (.mbn) vs non-squashed (.mdt + .b*) based on
 	# file contents, so it is fine to link venus.mbn to venus.mdt
 	# Older kernels look for venus.mdt, newer ones directly for venus.mbn
-	install -Dm644 "$builddir"/venus.mbn "$subpkgdir/$_fwdir"/venus-1.8/venus.mbn
-	ln -s venus.mbn "$subpkgdir/$_fwdir"/venus-1.8/venus.mdt
+	amove usr/lib/firmware/qcom/venus-1.8/venus.mbn
+	ln -s venus.mbn "$subpkgdir"/usr/lib/firmware/qcom/venus-1.8/venus.mdt
 }
 
 sha512sums="

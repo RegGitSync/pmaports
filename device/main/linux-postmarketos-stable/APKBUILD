@@ -1,7 +1,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-stable
-pkgver=6.19.12
+pkgver=7.0.9
 pkgrel=0
 _kver=${pkgver%.*}
 pkgdesc="Stable Kernel"
@@ -20,6 +20,7 @@ options="
 	pmb:kconfigcheck-community
 	pmb:kconfigcheck-immutable
 	pmb:kconfigcheck-rust
+	pmb:kconfigcheck-selinux
 	pmb:kconfigcheck-uefi
 	pmb:kconfigcheck-virt
 "
@@ -31,6 +32,7 @@ makedepends="
 	elfutils-dev
 	findutils
 	flex
+	kmod
 	linux-headers
 	lld
 	llvm
@@ -108,28 +110,28 @@ package() {
 	make modules_install $_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+	rm -f "$pkgdir"/usr/lib/modules/*/build "$pkgdir"/usr/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
 
 sha512sums="
-375caad1de11ef1466f7e2fa85775e990f215bae0e269d4a97661c936f633df40c51af849880ef05c4cd323cf1d27804b72222cb12df98af021623742e000330  patch-6.19.12.patch.xz
-01b29c7f4e5bc0c9802794c2cd027fece825f90417be229a71e60eefce530010d5d301749c54ae744e9d4a483518e769e2bb7e6e9209687681ad7fff11c3ed86  linux-6.19.tar.xz
+1a161507d59c389e945dbb7cfb1456df2edf14c8376290584a905e0b602ed79e717f8fe154402f56a8d64a20243772129976884effa140fb25151856a7e3630f  patch-7.0.9.patch.xz
+8c85b708342f8f09ca25b2234b22e93b62b144a9ef919fbb21827f52fa47498e778c79db1559524dd7fb360f95b2ce174171443c1859656c281be41d2b6c5a0b  linux-7.0.tar.xz
 1f11df2480e9f691573283597160b4c806e492cdca4825f3acb3afb70bde43abfab487bcde1f5553b431a702a0039479d041b0ce7859970e706b5a51d2ad8fb0  0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
 26521a9c9ea769534095dc4e306babadc8bcbaf03d7faa523c377e41ba0f742ecd0490fa27791d895f729c3ae8845297dca59b4db2475e7f078e689c447430bc  0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
 302c20c85559fc9b3b2420ed25be1bfbb76c87f2a470e4141c32e9542cf1f5c6b3b5a7847231a3eaa0f6bc0e5942d0c1599e807175dcf5e63469704c3d6adde3  0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
-b5ea08d6f40044f88d0ad8dc7c33a845fed510cbf0737bc6c258907ba2d3cb4d280e688919fcf41f004761d0aeb3bfa6361cd7eab394030af07745d44120da7f  config-stable.aarch64
-d322ab4ec3049d9886b82151bf2356c598491981d6f4e78ee30ee23f6aca10d34ce0ec054d7d59561d7b5087d80ab8958284d7504beccc60b967bac7b6580a43  config-stable.armv7
-f93a32906f91ad62aede0c9630184d018eab034b986767d8b0e1c9f83f44c3b609d1d8c849a3809dd1b8e1ebe6a3e53c9ccfc7e744eb346e76fe1e5f5435b111  config-stable.loongarch64
-78c49c8f8f3b6c45d1ff9a2b5cff5a6c0ac01142ee79c526e795293b1f99cacea3318003c40db74006f82ba1459ba92db2174fcaa706665daaf320f404fbc1c6  config-stable.ppc64le
-92fb5879b9aaf9f3e9761bcc4dfda4f0122d53e89d1c733bc831c570fb8fc34047e04cc058676b619b9f6bf2c39402c2db0789324e1e7433cd8592efe2fb7cd2  config-stable.riscv64
-c1ec4a16dc9d7b3ab745f5fce496d25f88764ad4c5ce8dcfcba13ad5abbd40f91aeb5547ebed19d6baf0df2dd796242a76149b9a215470dfae5d4a2d8f2e99e6  config-stable.x86
-a0a6f7728fba672f390cf7cc773509135f93e7fef941d4cb5673fb0b6da04263133cf1d9af64b3314f971ae578fcd77d0fbb478287f49df23bbc22edb4ae29ae  config-stable.x86_64
+24348ddf811d1a5da3e30d4be8fce9994384bbc241469e5a95c783a737ce0c46671e1848e5c0b579ac3ba44e3b31eee297d9d61d18780f28c6a9935373131fc1  config-stable.aarch64
+70b1193155d0c26aaafc8371c941eebc2ed0e4440bfa96c6a1da87ecd53eaa2ccaade35f7821d7dc3a9537c27ce0b94cd254755603bf85bb6c88736279c510ce  config-stable.armv7
+362754c8fc619fb3176d2a7060da2d113cc9a576ea1a6a99cd64768b8632421a64c4d582498089edd5e8255b927985e777155f1bcce794f933596515c70b8366  config-stable.loongarch64
+79e2b4dda2db54d9636052bdd8d55a9fd6cdc10deddc18a6a98ad09c4cb906aa14e452b8544c90053f58d1dbfa811fc75ab172256307373b0580097a8cbb638b  config-stable.ppc64le
+e561057ab34ef8bf90b6ce395c199a588d044d9e7a1876ce38b66058d201441ab7bdf23174a79c83e13f2bca9dfd4772665df4e94cad9316dd987b42c3f4855a  config-stable.riscv64
+993bdf85a8a366eaea96f14024256df4cb47c9193ccbef0a60706f63d350459eb92b52713eda6678ebc161e08dec83cc830693afc682da8ff009b399c425dfe0  config-stable.x86
+42d8a7b1ded55091f415ff227933aa371a21eda3cbbb2e08fd94f78154576304c29608b581828dacfb7bd6864f1b2c06682913fdb2227be044d0f39a9f25448d  config-stable.x86_64
 "

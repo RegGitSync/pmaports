@@ -1,7 +1,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-mainline
-pkgver=7.0
+pkgver=7.1_rc3
 pkgrel=0
 _rel=${pkgver#*_p}
 _kver=${pkgver%_p*}
@@ -22,6 +22,7 @@ options="
 	pmb:kconfigcheck-community
 	pmb:kconfigcheck-immutable
 	pmb:kconfigcheck-rust
+	pmb:kconfigcheck-selinux
 	pmb:kconfigcheck-uefi
 	pmb:kconfigcheck-virt
 "
@@ -104,27 +105,27 @@ package() {
 	make modules_install $_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+	rm -f "$pkgdir"/usr/lib/modules/*/build "$pkgdir"/usr/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
 
 sha512sums="
-f33998359e088ddc344fff44a32e8bdec49206dd45c63f5472366b2b2f925b5828f4455cd974ae157ec33374a36e9b2a2a741b334c238ccc0c8601ee6a56fa50  linux-postmarketos-mainline-7.0.tar.gz
+d03da193054c560d76ead500fb20e4bfa8ea12b4afd6120d6f9745a51614541d185270e1a9c4bc681f9d429e8cde03c7c32c0687c30c9b20a73286eff52d138a  linux-postmarketos-mainline-7.1_rc3.tar.gz
 1f11df2480e9f691573283597160b4c806e492cdca4825f3acb3afb70bde43abfab487bcde1f5553b431a702a0039479d041b0ce7859970e706b5a51d2ad8fb0  0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
 26521a9c9ea769534095dc4e306babadc8bcbaf03d7faa523c377e41ba0f742ecd0490fa27791d895f729c3ae8845297dca59b4db2475e7f078e689c447430bc  0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
 302c20c85559fc9b3b2420ed25be1bfbb76c87f2a470e4141c32e9542cf1f5c6b3b5a7847231a3eaa0f6bc0e5942d0c1599e807175dcf5e63469704c3d6adde3  0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
-fe1243700721893ffd68a814c34e10902a72cc81ea8c7c6118faaa34965e7c587467174c71f7fdce4446d1de8a84d334375a28811d9d6adabbc93c461fcd17ff  config-mainline.aarch64
-e7810d3769f14ed4dce8a7d0f989a70c14d29c9120821ec28efc7e5d2c90623c7ae657b092a745212ad0ff593d6ae0956dc6455bad01fecab1446fd2cbd8158d  config-mainline.armv7
-13ef29743774d6c1bda0412a0ee7c65674c73c0bf63e672662cf9666a33880c0981e6c431fc5851eeaaa78692c5402f3e42a48e89ac596b0fa29266291dc4a77  config-mainline.loongarch64
-f6e430d5054f44ebe69b3c1ab285253626d39fa7c8fe2cd1bc018cfc041a2c57dac5b6a60e1f122e2b77e8f34b30c42ded9ce3165022f3cc11d9657a95d7fbcb  config-mainline.ppc64le
-a00292acfba3340f75d4e94b900ace6eb3e0508fed6c264436da55dce0ee8f5e405356edab8f19b152db82fd30b1a83c7c110c2a35de65aea6e2ac3d4ea68d32  config-mainline.riscv64
-d9fb518d6b089b6ed48976fe1598cbd899676bb3eca147bf83b409dcb77c6cb5437ebce6006f764f15da261ed71bb8ee1d091decddcf6201c82a111308352ca5  config-mainline.x86
-b8406799c7ac5f4095e1b62ca0f4ddcfcd0bb4a9627850c7fa14dbcd8b745d34bbcdab6becd524d6780a96aa18a07964d0f3d1fe486b465f2edcc65fa0e35414  config-mainline.x86_64
+ebb0214028ce844d32b4b6f5bb46b89834ed3acf4c4697459193d7ee792ffae2514e682a614861fded7c65294404756746226bd9fe873d9e932f787f73f893c0  config-mainline.aarch64
+c2b3155f821f9e40ac3f950e84c91c901770ccd92e237035ac8410bada89d06071f5e1749812e506389f642431b61601356716a93da7a158ea0bcf9f89f3966c  config-mainline.armv7
+1526852b42a5bd6e32325d4a67e490acebef202cf6e43295539e53cb5e106eb08d5ce884b3ba678e81830bfc64ddea3aa6a5e11faec9f09b40d759d0946ef3fa  config-mainline.loongarch64
+7f14524a3b46e52d57e0bec01615aab4780cb1f8844b6c9fb6ee568c5393a4a4032d0cdeea022cac0405ca995d2463b446e3acedd15e65568056a156ede91f03  config-mainline.ppc64le
+100d6a66fddffc121830d21ea1bb2e2fada4a93d09f1bbfa9f0e951e030bfd18d33579931f7e16a21aa82e148f813dff7791b78c7e83ec7311848b94167c3116  config-mainline.riscv64
+2e2680c00d617ac621e082d914ea606e08d927000569852773a42ef6d54ccf8a7602895242111c252305af7f4b5c116b56bec90eb4dfd1495fc093e5286d0b30  config-mainline.x86
+02a14f64bbf23107cd5235261a160fbbb015d59698c27a11582ff8a947cfb3710a5ed1c163cd7b74fd8a46dafc2c946e6c84038e938a50ca10825a5af90e1430  config-mainline.x86_64
 "

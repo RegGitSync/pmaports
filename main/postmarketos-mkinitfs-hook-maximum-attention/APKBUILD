@@ -1,7 +1,7 @@
-maintainer=""
+maintainer="Aster Boese <asterboese@mailbox.org>"
 pkgname=postmarketos-mkinitfs-hook-maximum-attention
 pkgver=0.2.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Script to activate all user-visible outputs from the initramfs (to confirm working kernel, for debugging only)"
 url="https://postmarketos.org"
 depends="postmarketos-mkinitfs"

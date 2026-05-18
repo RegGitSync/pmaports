@@ -1,8 +1,7 @@
-
 maintainer="Luca Weiss <luca@lucaweiss.eu>"
 _flavor="postmarketos-qcom-milos"
 pkgname=linux-$_flavor
-pkgver=6.19.10
+pkgver=7.0.5
 pkgrel=0
 pkgdesc="Mainline Kernel fork for Qualcomm Milos SoC (SM7635, etc.) devices"
 arch="aarch64"
@@ -57,7 +56,7 @@ package() {
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
@@ -67,6 +66,6 @@ package() {
 }
 
 sha512sums="
-14b1b5803b78c37431cb44af1c4870516c9369aacc278b3fa7e59351392c0cc2811bb190d30677ab710f338ac975968b27ebc8535513a944130bf6fa1f014aa7  linux-v6.19.10-milos.tar.gz
-600b40c2868ae2d8bd3c2497fa1770f817222798dc1d5d496029a6ad03758f797c450d4357dc1664001d039b242291be4e58044d55a0fdd98c0d01d6367d752a  config-postmarketos-qcom-milos.aarch64
+c12783c54a2d3c3edf9f5ef187eff274b0c509f0e473efd3befa3463b4556a1c866ab317c45bffe414737e04f80f6d73a095fc80d201fd8f761354a6823fa513  linux-v7.0.5-milos.tar.gz
+efaabc4729c186d94a578ec1f1293cfd79f8cd63596122fa9e1b944f9e0cbb1ea04d43ff186e74c37ae954d5a5afd06bd3989dbc3ea08a4dd6b9b72abd08cd67  config-postmarketos-qcom-milos.aarch64
 "

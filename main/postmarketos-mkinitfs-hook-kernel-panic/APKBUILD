@@ -1,7 +1,7 @@
-maintainer=""
+maintainer="Aster Boese <asterboese@mailbox.org>"
 pkgname=postmarketos-mkinitfs-hook-kernel-panic
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Script to cause a kernel panic after 30s from the initramfs (for debugging only)"
 url="https://postmarketos.org"
 depends="postmarketos-mkinitfs"

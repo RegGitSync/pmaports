@@ -1,12 +1,13 @@
 maintainer="Clayton Craft <clayton@craftyguy.net>"
 pkgname=postmarketos-base-ui
-pkgver=47
-pkgrel=1
+pkgver=49
+pkgrel=0
 pkgdesc="Meta package for minimal postmarketOS UI base"
 url="https://postmarketos.org"
 arch="noarch"
 license="GPL-3.0-or-later"
 depends="
+	avahi
 	chrony
 	dbus
 	haveged
@@ -14,7 +15,7 @@ depends="
 	pipewire
 	postmarketos-artwork-icons
 	postmarketos-base
-	postmarketos-bootsplash
+	postmarketos-bootsplash-virtual
 	shadow
 	sleep-inhibitor
 	tzdata

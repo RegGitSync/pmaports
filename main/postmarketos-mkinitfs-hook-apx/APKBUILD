@@ -1,8 +1,8 @@
 # Documentation: https://wiki.postmarketos.org/wiki/Nvidia_Tegra#APX
-maintainer=""
+maintainer="Aster Boese <asterboese@mailbox.org>"
 pkgname=postmarketos-mkinitfs-hook-apx
 pkgver=1
-pkgrel=2
+pkgrel=3
 pkgdesc="Enter APX on boot for NVIDIA Tegra devices"
 url="https://postmarketos.org"
 depends="postmarketos-mkinitfs devmem2"

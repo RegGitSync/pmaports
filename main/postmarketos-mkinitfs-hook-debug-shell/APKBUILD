@@ -1,7 +1,7 @@
-maintainer=""
+maintainer="Aster Boese <asterboese@mailbox.org>"
 pkgname=postmarketos-mkinitfs-hook-debug-shell
 pkgver=0.8.1
-pkgrel=0
+pkgrel=1
 pkgdesc="Root shell in the initramfs (security hole, for debugging only)"
 url="https://postmarketos.org"
 depends="postmarketos-mkinitfs devicepkg-utils fbdebug evtest linuxconsoletools reboot-mode libinput libinput-tools"

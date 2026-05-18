@@ -1,5 +1,44 @@
 # Packaging Guidelines
 
+## Maintainership
+
+Every package is expected to have a maintainer. The only exception is packages
+in the [Archived](#device-category-archived) category.
+
+Maintainers are identified by the maintainer variable in the `APKBUILD` of the
+package like:
+
+```sh
+maintainer="Jane Doe <jane@example.org>"
+```
+
+The email should be added to the gitlab user of the maintainer, to make it
+possible for the user to be pinged when doing changes. The name can be any
+identifier the maintainer uses online or in person.
+
+Packages can also have Co-Maintainers, which are identified by a comment like:
+
+```sh
+# Co-Maintainer: John Doe <john@example.org>
+```
+
+Maintainers and Co-Maintainers will be pinged whenever changes to their packages
+are made.
+
+Enforcing of this guideline [will
+wait](https://postmarketos.org/devel/2026/03/24/archiving-unmaintained-devices/)
+for v26.06 to be released.
+
+## Meta packages
+
+### Package versioning (pkgver, pkgrel)
+
+Packages without upstream sources are a bit special. These are `device-*`
+packages and other packages like `main/postmarketos-base`, where the source
+files are included in the package directory. For these packages, the `pkgver`
+should always be incremented instead of the `pkgrel` (so that `pkgrel` always
+is `0`).
+
 ## Provides, priorities, alternatives, and forking packages
 
 The APK concepts around selecting conflicting packages for a same purpose, e.g:
@@ -264,13 +303,3 @@ only in some specific circumstances? In those situations we have to:
     versioned provider to disambiguate (e.g:
     `provides="audio-conf=$pkgver-r$pkgrel"`), or to force the forked packages
     to provide a lower version than the other package.
-
-## Meta packages
-
-### Package versioning (pkgver, pkgrel)
-
-Packages without upstream sources are a bit special. These are `device-*`
-packages and other packages like `main/postmarketos-base`, where the source
-files are included in the package directory. For these packages, the `pkgver`
-should always be incremented instead of the `pkgrel` (so that `pkgrel` always
-is `0`).

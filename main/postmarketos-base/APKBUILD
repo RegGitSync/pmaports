@@ -262,6 +262,10 @@ openrc() {
 		openrc-user-pam
 		openssh-server-common-openrc
 		postmarketos-zram-openrc
+		systemd-standalone-sysusers
+		systemd-standalone-sysusers-openrc
+		systemd-standalone-tmpfiles
+		systemd-standalone-tmpfiles-openrc
 		udev-init-scripts-openrc
 		"
 

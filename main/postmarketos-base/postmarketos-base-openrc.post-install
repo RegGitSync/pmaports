@@ -7,16 +7,16 @@ rc-update add udev-settle sysinit
 rc-update add udev-postmount default
 
 # Enable other OpenRC services
-for service in devfs dmesg; do
+for service in devfs dmesg seedfiles-setup-dev; do
 	rc-update -q add $service sysinit
 done
-for service in hwclock modules sysctl hostname bootmisc logbookd tmpfs; do
+for service in bootmisc hwclock hostname logbookd modules seedfiles-setup sysctl tmpfs; do
 	rc-update -q add $service boot
 done
 for service in sshd swapfile local postmarketos-zram-swap; do
 	rc-update -q add $service default
 done
-for service in mount-ro killprocs savecache; do
+for service in killprocs mount-ro savecache seedfiles-remove; do
 	rc-update -q add $service shutdown
 done
 

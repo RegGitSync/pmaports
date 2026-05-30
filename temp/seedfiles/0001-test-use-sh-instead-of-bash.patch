@@ -1,0 +1,38 @@
+From 7a23e23cd4f5b02a3818993c6bd099dea437902a Mon Sep 17 00:00:00 2001
+From: Aster Boese <asterboese@mailbox.org>
+Date: Sat, 30 May 2026 17:36:50 +0200
+Subject: [PATCH] test: use sh instead of bash
+
+Signed-off-by: Aster Boese <asterboese@mailbox.org>
+---
+ test/test-integration.sh | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/test/test-integration.sh b/test/test-integration.sh
+index d0d69a0..5728b89 100755
+--- a/test/test-integration.sh
++++ b/test/test-integration.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/bin/sh
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ 
+ set -euo pipefail
+@@ -327,10 +327,12 @@ echo "ccc" > "$TESTDIR/wglob-3.dat"
+ write_conf "24-wglob" "w $TESTDIR/wglob-*.dat - - - - replaced"
+ "$SEEDFILES" --create "$TESTDIR/24-wglob.conf"
+ WGLOB_OK=true
+-for f in "$TESTDIR"/wglob-{1,2,3}.dat; do
+-    if [ "$(cat "$f")" != "replaced" ]; then
++i=1
++while [ "$i" -le 3 ]; do
++    if [ "$(cat "$TESTDIR"/wglob-"$i".dat)" != "replaced" ]; then
+         WGLOB_OK=false
+     fi
++    i=$((i + 1))
+ done
+ if $WGLOB_OK; then
+     pass "write_file_glob"
+-- 
+2.54.0
+

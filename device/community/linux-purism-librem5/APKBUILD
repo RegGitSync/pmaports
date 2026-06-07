@@ -3,13 +3,14 @@
 # Contributor: Clayton Craft <clayton@craftyguy.net>
 maintainer="Alistair Francis <alistair@alistair23.me>"
 pkgname=linux-purism-librem5
-pkgver=6.12.92
+pkgver=6.6.139
 pkgrel=0
 # NOTE: Don't forget to rebase the config! See prepare() for instructions.
 _purismrel=1
 _pureosrel=cri1
-# <kernel ver> + <purism kernel release> + <PureOS release>
-_purismver=${pkgver}pureos${_purismrel}_$_pureosrel
+# NOTE: No _pureosrel for 6.6.139!
+#_purismver=${pkgver}pureos${_purismrel}_$_pureosrel
+_purismver=${pkgver}pureos${_purismrel}
 pkgdesc="Purism Librem 5 phone kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -37,7 +38,10 @@ makedepends="
 	perl
 	rsync
 	xz
-	zstd
+	clang
+	lld
+	llvm
+	linux-headers
 	"
 install="$pkgname.post-upgrade"
 
@@ -98,6 +102,6 @@ package() {
 }
 
 sha512sums="
-ad1ab5c1101cf222d2c4c3edeffeda4228fe29dfba406694370c50d724d7baecd0ab2db4f4e0c7aed60a16e9a80a4b421d82486543249eded7e9a7f1b7c996c7  linux-purism-librem5-6.12.92pureos1_cri1.tar.gz
-5c60820588ed2ce7f73656abea77138460b2d03b260811e45ad2b40b3de70a8fafc1681d2a4b32c5b7a133344134a38afee374f4e45755862e85b8cfeaba63c0  config-purism-librem5.aarch64
+d51709ee85ac8ebe271fc57ba60e2ab5f90225bd045b813a281553b0f76ae4c227317201fbb509e59af9813ea3e49947e83ac7d82b97cede15212cadd90fc372  linux-purism-librem5-6.6.139pureos1.tar.gz
+323e1d4760857c62efa67362b36b098f7fd2d6f49970236965cfab4bb8ae43ddbafa76f2fcd0deb8faa53e4b87bf202ab3507dc10f2364234af4c10453768337  config-purism-librem5.aarch64
 "

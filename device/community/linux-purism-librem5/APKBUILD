@@ -9,7 +9,7 @@ pkgrel=0
 _purismrel=_1
 _pureosrel=_cri1
 # <kernel ver> + <purism kernel release> + <PureOS release>
-_purismver=${pkgver}pureos$purismrel$_pureosrel
+_purismver=${pkgver}pureos$_purismrel$_pureosrel
 pkgdesc="Purism Librem 5 phone kernel fork"
 arch="aarch64"
 _carch="arm64"

@@ -5,6 +5,10 @@ the continuous integration behaviour for your merge requests.
 
 ## Current CI tags
 
+* `[ci:skip-apkbuild-lint]`: Don't run `apkbuild-lint` from
+  [atools-go](https://gitlab.alpinelinux.org/alpine/infra/atools-go). Use this
+  e.g. when making treewide changes where fixing up all APKBUILDs in the same
+  merge request is not useful.
 * `[ci:skip-build]`: Do not build modified packages, only verify their
   checksums. Use this when pushing changes to an MR that should not trigger a
   complete build.
@@ -19,6 +23,8 @@ the continuous integration behaviour for your merge requests.
 * `[ci:skip-dint]`: Do not run the device-linter check. Use this when moving
   or modifying many devices not maintained by you that due to historical reasons
   might not pass the check.
+* `[ci:skip-grep]`: Do not run the grep check. Use this when renaming or moving
+  unmaintained packages.
 * `[skip ci]`: Completely skip the pipeline for the merge request. This is a
   GitLab [feature](https://docs.gitlab.com/ci/pipelines/#skip-a-pipeline). Use
   this only in very extreme situations where CI might be broken, but a change is

@@ -106,7 +106,9 @@ The purpose of community is to increase visibility of devices that:
 
 Requirements:
 
-* Must run a close-to-mainline kernel
+* Must run a close-to-mainline kernel as new or newer than the oldest supported LTS release
+  * The kernel version does not need to be the latest released patch version
+* Kernel must be compiled with LLVM
 * Port and dependencies build
 * The device boots
 
@@ -199,8 +201,7 @@ straight to main.
   Consistency changes that require lots of work should be documented as issues
   an expect to be fixed in the future, but should not unnecessarily delay
   merge.
-* Before merging, the MR must have at least *four approvals*, 2 of which should
-  be from Core Contributors.
+* Before merging, the MR must have at least *four approvals* from team members
 
 #### After merge
 

@@ -3,8 +3,9 @@
 # Co-Maintainer: Oliver Smith <ollieparanoid@postmarketos.org>
 maintainer="Clayton Craft <craftyguy@postmarketos.org>"
 pkgname=systemd-stage0
-pkgver=260.1
+pkgver=261_rc3
 _pkgver="${pkgver/_/-}"
+# pkgrel must match systemd!
 pkgrel=1
 pkgdesc="Minimal systemd bootstrap package"
 url="https://github.com/systemd/systemd"
@@ -15,7 +16,7 @@ license="MIT AND GPL-2.0-only AND LGPL-2.1-or-later"
 # This is only for bootstrapping other packages, make sure it does not get
 # pulled into real installations via !postmarketos-base and !tracedeps
 depends="!postmarketos-base"
-depends_libs="!postmarketos-base"
+depends_libs="!postmarketos-base libucontext"
 depends_dev="!postmarketos-base"
 depends_doc="!postmarketos-base"
 options="!tracedeps !check pmb:cross-native2 pmb:strict"
@@ -35,6 +36,7 @@ makedepends_host="
 	libcap
 	libcap-dev
 	libintl
+	libucontext-dev
 	musl-libintl
 	util-linux
 	util-linux-dev
@@ -69,6 +71,7 @@ build() {
 		-Ddebug-shell=/bin/ash \
 		\
 		-Dbootloader=disabled \
+		-Dukify=disabled \
 		-Dutmp=false \
 		-Dldconfig=false \
 		-Duserdb=false \
@@ -100,10 +103,29 @@ build() {
 	meson compile ${JOBS:+-j ${JOBS}} -C build
 }
 
+dev() {
+	default_dev
+
+	# Since we set !tracedeps, we must explicitly list things we want this
+	# package to provide. We mainly need systemd-stage0 to build dbus, which
+	# we then use to build the "real" systemd. We do not want to re-compile
+	# dbus afterwards, dbus-dev should pull in libsystemd.
+	# If we don't explicitly provide pc:libsystemd here, building dbus
+	# against systemd-stage0 would result in the following abuild log:
+	# "Could not find any provider for pc:libsystemd>=209"
+	# and dbus-dev would not depend on libsystemd.
+	# If systemd-stage0-dev provides pc:libsystemd, this is solved and
+	# dbus-dev correctly depends on pc:libsystemd. And yes, this is only
+	# necessary because of !tracedeps.
+	# See pma#4156 for the bootstrap issue this solves.
+	provides="$provides pc:libsystemd=${pkgver%%[._]*}"
+	provider_priority=1
+}
+
 package() {
 	DESTDIR="$pkgdir" meson install --no-rebuild -C build
 }
 
 sha512sums="
-9f975dce6861853a817a7ceab18a24449a85d1bda6939b3a5173430c02a4d8a9a2b34ebb8cce1c51db9b0ff9078fcc65da7b0f44e3bdcbbe013b9e04bb6f0ff9  systemd-260.1.tar.gz
+facbcb7831fb84a38eaee5804d9aa03382486006cdb559010d6d353ad9a3986b516522cde1f0e0808fb49365859f790dd1caed24875a1c9e339e892d09d2cf30  systemd-261_rc3.tar.gz
 "

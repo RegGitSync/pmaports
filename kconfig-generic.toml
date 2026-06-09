@@ -28,6 +28,7 @@ COMMON_CLK = "y"
 PWM = "y"
 PWM_CLK = "m"
 ["category:clocks".">=0.0.0"."aarch64"]
+SC_CAMCC_7180 = "m"
 SC_DISPCC_7180 = "m"
 SC_GPUCC_7180 = "m"
 SC_LPASS_CORECC_7180 = "m"
@@ -41,6 +42,9 @@ DWMAC_MOTORCOMM = "y"
 
 # display controllers, bridges, panels, etc.
 ["category:graphics".">=0.0.0"."all"]
+BACKLIGHT_PWM = "y"
+BACKLIGHT_CLASS_DEVICE = "y"
+BACKLIGHT_GPIO = "y"
 DRM_AMDGPU = "m"
 ["category:graphics".">=0.0.0"."aarch64 armv7"]
 EXYNOS_IOMMU = "y"
@@ -48,6 +52,8 @@ NOUVEAU_PLATFORM_DRIVER = "y"
 ["category:graphics".">=0.0.0"."aarch64"]
 BACKLIGHT_KTZ8866 = "m"
 DRM_PANEL_EBBG_FT8719 = "m"
+DRM_PANEL_INNOLUX_P079ZCA = "m"
+DRM_PANEL_KINGDISPLAY_KD097D04 = "m"
 DRM_PANEL_LG_SW43408 = "m"
 DRM_PANEL_NOVATEK_NT36523 = "m"
 DRM_PANEL_SAMSUNG_SOFEF00 = "m"
@@ -76,6 +82,10 @@ INPUT_REGULATOR_HAPTIC = "m"
 INPUT_TOUCHSCREEN = "y"
 RMI4_CORE = "m"
 RMI4_I2C = "m"
+RMI4_SMB = "m"
+RMI4_SPI = "m"
+RMI4_F34 = "y"
+RMI4_F55 = "y"
 STK3310 = "m"
 TOUCHSCREEN_MELFAS_MIP4 = "m"
 TOUCHSCREEN_NOVATEK_NVT_TS = "m"
@@ -83,6 +93,11 @@ TOUCHSCREEN_S6SY761 = "m"
 TOUCHSCREEN_ZINITIX = "m"
 ["category:input".">=0.0.0"."aarch64"]
 INPUT_MAX77693_HAPTIC = "m"
+SURFACE_HID = "m"
+SURFACE_KBD = "m"
+["category:input".">=0.0.0"."aarch64 armv7"]
+HID_GOOGLE_HAMMER = "m"
+I2C_HID_OF_GOODIX = "m"
 
 # led and light devices
 ["category:led".">=0.0.0"."all"]
@@ -91,6 +106,16 @@ LEDS_MAX77705 = "m"
 # localversion
 ["category:localversion".">=0.0.0"."all"]
 LOCALVERSION_AUTO = "n"
+
+["category:misc".">=0.0.0"."aarch64"]
+# This is required for running armhf userspace on aarch64
+ARMV8_DEPRECATED = "y"
+CP15_BARRIER_EMULATION = "y"
+SENSORS_SURFACE_FAN = "m"
+SENSORS_SURFACE_TEMP = "m"
+SURFACE_AGGREGATOR = "m"
+SURFACE_AGGREGATOR_REGISTRY = "m"
+SWP_EMULATION = "y"
 
 # useful ppc64le configs, taken from Alpine
 ["category:misc".">=0.0.0"."ppc64le"]
@@ -102,6 +127,19 @@ PPC_SUBPAGE_PROT = "y"
 ["category:misc".">=0.0.0"."loongarch64"]
 CPU_HAS_LBT = "y"
 
+# Network device drivers
+["category:network".">=0.0.0"."aarch64 armv7"]
+RT2400PCI = "m"
+RT2500PCI = "m"
+RT2500USB = "m"
+RT2800PCI = "m"
+RT2800USB = "m"
+RT2X00 = "m"
+RT61PCI = "m"
+RT73USB = "m"
+RTL8187 = "m"
+RTL8723BS = "m"
+
 # power supplies, fuel gauges, etc.
 ["category:power".">=0.0.0"."all"]
 CHARGER_MAX77705 = "m"
@@ -111,8 +149,10 @@ REGULATOR = "y"
 SPMI = "y"
 ["category:power".">=0.0.0"."aarch64"]
 BATTERY_LENOVO_YOGA_C630 = "m"
+BATTERY_SURFACE = "m"
 CHARGER_BQ25980 = "m"
 CHARGER_QCOM_SMB2 = "m"
+CHARGER_SURFACE = "m"
 MFD_QCOM_RPM = "m"
 MFD_SL28CPLD = "m"
 QCOM_SPMI_RRADC = "m"
@@ -131,6 +171,10 @@ REMOTEPROC_CDEV = "y"
 BLK_DEV_NVME = "m"
 NVME_CORE = "m"
 
+# Trusted Platform Modules
+["category:tpm".">=0.0.0"."aarch64 armv7"]
+TCG_TIS_I2C = "m"
+
 # EFI framebuffer support is explicitly disabled in some close-to-mainline
 # kernels, so it cannot go in kconfigcheck
 ["category:uefi".">=0.0.0"."aarch64 armv7 loongarch64 riscv64 x86 x86_64"]
@@ -140,6 +184,8 @@ FB_EFI = "y"
 ["category:usb".">=0.0.0"."aarch64"]
 UCSI_LENOVO_YOGA_C630 = "m"
 QCOM_GSBI = "y"
+["category:usb".">=0.0.0"."aarch64 armv7"]
+CHARGER_CROS_USBPD = "m"
 ["category:usb".">=0.0.0"."all"]
 USB_SERIAL_CH341 = "m"
 

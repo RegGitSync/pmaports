@@ -1,9 +1,9 @@
-maintainer="Jan Jasper de Kroon <jajadekroon@gmail.com>"
+maintainer="Rudraksha Gupta <guptarud@gmail.com>"
 pkgname=linux-pine64-pinephonepro
 pkgver=7.0
 _pkgver=7.0
 _tagdate=20251104-2007
-pkgrel=1
+pkgrel=2
 pkgdesc="Mainline kernel for the pinephone pro"
 arch="aarch64"
 _flavor="${pkgname#linux-}"
@@ -74,7 +74,7 @@ package() {
 	make zinstall modules_install dtbs_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_PATH="$pkgdir"/boot \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-$_flavor

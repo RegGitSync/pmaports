@@ -25,10 +25,11 @@ makedepends="
 	perl
 	postmarketos-installkernel
 	python3
+	zstd
 "
 
 # Source
-_commit="c09fbf12214af3b7a5615cb15b90c37d564b8eb3"
+_commit="e42d4dd4c83a43e86823520285796b6a7c8f5fdd"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/ianchb/sm8550-mainline/archive/$_commit.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64

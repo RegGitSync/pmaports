@@ -1,0 +1,46 @@
+maintainer="Aster Boese <asterboese@mailbox.org>"
+pkgname=seedfiles
+pkgver=1.5
+pkgrel=0
+pkgdesc="Portable drop-in reimplementation of systemd-tmpfiles"
+url="https://git.pinkro.se/Rose/gardenhouse/seedfiles.git/about/"
+arch="all"
+license="GPL-3.0-or-later"
+makedepends="acl-dev linux-headers meson"
+subpackages="$pkgname-doc $pkgname-openrc"
+# Use official mirror because git repo returns 403
+source="$pkgname-$pkgver.tar.gz::https://codeberg.org/Gardenhouse/seedfiles/archive/v$pkgver.tar.gz
+	0001-test-use-sh-instead-of-bash.patch
+	seedfiles-clean.initd
+	seedfiles-setup-dev.initd
+	seedfiles-setup.initd
+	"
+builddir="$srcdir/$pkgname"
+# check: https://codeberg.org/Gardenhouse/seedfiles/issues/19
+options="!check"
+
+build() {
+	abuild-meson \
+		-Ddefault_configs=disabled \
+		. output
+	meson compile ${JOBS:+-j ${JOBS}} -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+
+	install -Dm755 "$srcdir"/seedfiles-clean.initd \
+		"$pkgdir"/etc/init.d/seedfiles-clean
+	install -Dm755 "$srcdir"/seedfiles-setup-dev.initd \
+		"$pkgdir"/etc/init.d/seedfiles-setup-dev
+	install -Dm755 "$srcdir"/seedfiles-setup.initd \
+		"$pkgdir"/etc/init.d/seedfiles-setup
+}
+
+sha512sums="
+f3e8ecbe0b8ec9ca1d71453a1bd033359920bc2ec8b764b897ab575f0c7d6e36dc8a35223d015cdb1802ed8e1d962dc076b7c51ec987f3a96226867bdf1f8b10  seedfiles-1.5.tar.gz
+d02cb9759ae8c12fc7af98babb1a539c07d601e0fc42adf6db9e4ee8605d508cb093ff1b960a9536afb1949fda500406f34eef987b058db2f39780f232cd131e  0001-test-use-sh-instead-of-bash.patch
+e6011181c1033db5246c2a30b0676f352cecca870a51e2f150112631de1d4eca99fcd411a2528add8729368b30b8969d915e0c2da62c328edff81e36106dccf5  seedfiles-clean.initd
+606baeb739644c424578fd2f0e3e9abced44fbd84122434b073694d2eb179c904e350a2e2d3de38b3c28a9649a95857d6a190ad70a21bd71aac50832048bd690  seedfiles-setup-dev.initd
+8508267e2bbc6853b2efd95665b528ca3f57531eafb736707164e52ef623c330db46c4686af7c568fcc0a8571e664a0bcf013603aad1f3868c94417a4a66c6ec  seedfiles-setup.initd
+"

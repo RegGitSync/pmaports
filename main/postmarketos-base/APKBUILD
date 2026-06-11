@@ -261,6 +261,8 @@ openrc() {
 		openrc-user-pam
 		openssh-server-common-openrc
 		postmarketos-zram-openrc
+		seedfiles
+		seedfiles-openrc
 		udev-init-scripts-openrc
 		"
 

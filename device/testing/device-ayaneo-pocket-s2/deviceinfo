@@ -11,7 +11,7 @@ deviceinfo_dtb="qcom/sm8650-ayaneo-pocket-s2"
 deviceinfo_arch="aarch64"
 
 # Device related
-deviceinfo_chassis="tablet"
+deviceinfo_chassis="handheld"
 deviceinfo_external_storage="true"
 deviceinfo_drm="true"
 

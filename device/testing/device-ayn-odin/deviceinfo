@@ -12,7 +12,7 @@ deviceinfo_dtb_odin_m2="qcom/sdm845-ayn-odin-m2"
 deviceinfo_arch="aarch64"
 
 # Device related
-deviceinfo_chassis="tablet"
+deviceinfo_chassis="handheld"
 deviceinfo_external_storage="true"
 deviceinfo_drm="true"
 

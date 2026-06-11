@@ -10,7 +10,7 @@ deviceinfo_year="2023"
 deviceinfo_arch="aarch64"
 
 # Device related
-deviceinfo_chassis="tablet"
+deviceinfo_chassis="handheld"
 deviceinfo_external_storage="true"
 
 # Bootloader related

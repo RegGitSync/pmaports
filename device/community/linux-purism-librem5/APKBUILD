@@ -35,6 +35,7 @@ makedepends="
 	perl
 	rsync
 	xz
+	zstd
 	"
 install="$pkgname.post-upgrade"
 

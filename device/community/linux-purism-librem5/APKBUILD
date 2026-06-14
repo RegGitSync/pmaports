@@ -36,10 +36,6 @@ makedepends="
 	perl
 	rsync
 	xz
-	clang
-	lld
-	llvm
-	linux-headers
 	"
 install="$pkgname.post-upgrade"
 

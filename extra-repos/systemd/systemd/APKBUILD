@@ -17,7 +17,7 @@ pkgname=systemd
 pkgver=261_rc3
 _pkgver="${pkgver/_/-}"
 # pkgrel must match systemd-stage0!
-pkgrel=3
+pkgrel=4
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 # armhf: no linux-stable
@@ -44,7 +44,7 @@ triggers="$pkgname.trigger=/usr/lib/systemd/catalog:\
 /etc/systemd/system:\
 /etc/systemd/user
 "
-checkdepends="grep postmarketos-release"
+checkdepends="gdb grep postmarketos-release"
 # clang: used for bpf compilation. this is the default compiler
 # grep: test-kernel-install requires 'grep -G', which is not supported by BusyBox grep.
 makedepends="
@@ -326,11 +326,11 @@ build() {
 }
 
 check() {
-	case "$CARCH" in
-	x86_64) meson test --print-errorlogs --quiet --no-stdsplit -C $_meson_builddir ;;
-	*)
-		echo "*** NOTE: Skipping tests for archs that might use pmb:crossdirect/qemu-user ***" ;;
-	esac
+	if [ "$PMB_CROSS" = "unnecessary" ]; then
+		meson test --print-errorlogs --quiet --no-stdsplit -C $_meson_builddir
+	else
+		echo "*** NOTE: Skipping tests, not building natively ***"
+	fi
 }
 
 package() {

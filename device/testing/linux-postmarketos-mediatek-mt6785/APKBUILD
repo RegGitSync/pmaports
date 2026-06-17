@@ -38,6 +38,7 @@ _defconfig="defconfig"
 source="
 	$url/-/archive/$_tag/linux-$_tag.tar.gz
 	$_config
+	0001-meow.patch
 "
 builddir="$srcdir/linux-$_tag"
 
@@ -71,4 +72,5 @@ package() {
 sha512sums="
 942074da4bcef0c9f9a1b155b16242a27ce66c7f48e187b45dbb2ad39a2dbedd6ceadcfa0f9029ba78876f5be0cb2b43578c906f1a7e33f8bc77e246e54564df  linux-7.1-r0.tar.gz
 188779333730813ef392a4427690afebb02a31d6bd8d2cee5e4b73543ed44252d13d79db02762b7740b98c7e7bbee0866624667f1bfbf60198fdfea6db1d6851  config-postmarketos-mediatek-mt6785.aarch64
+4622dc49191d75fd2de10e8957152ce9a64e79553d69bd192e742cc83766791f32b700103c50fbaff7428d8a69ff425cedb4f482aaed713ab340b706a2938938  0001-meow.patch
 "

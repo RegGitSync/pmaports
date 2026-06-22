@@ -264,6 +264,11 @@ default_value = false
 [variable.flash.bootimg_custom_args]
 description = "Additional custom arguments to pass to mkbootimg. Caution: adding contents to this variable removes the `--header-version` and `--dtb` arguments, which need to be added manually in that case"
 
+[variable.flash.bootimg_zimage64]
+description = "Set this to true if your device, which by default can accept 32-bit only images, requires a shimmed 64-bit kernel image (through zimage64 tool), to make it booting"
+datatype = "boolean"
+default_value = false
+
 [variable.flash.header_version]
 description = "Header version of boot image as defined by Android documentation."
 integer_interval = "[0, 4]"

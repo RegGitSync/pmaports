@@ -1,11 +1,8 @@
 maintainer="Dinolek <git@dinolek.me>"
-pkgname=firmware-xiaomi-begonia
+pkgname=firmware-xiaomi-begonia-touchscreen
 pkgver=20250810
 pkgrel=0
-pkgdesc="Firmware for Xiaomi Redmi Note 8 Pro"
-subpackages="
-	$pkgname-touchscreen
-"
+pkgdesc="Touchscreen firmware for Xiaomi Redmi Note 8 Pro"
 url="https://gitlab.postmarketos.org/mt6785-mainline/firmware"
 arch="aarch64"
 license="proprietary"
@@ -18,17 +15,10 @@ source="
 builddir="$srcdir/firmware-$_commit"
 
 package() {
-	# parent package is empty
-	mkdir -p "$pkgdir"
-}
-
-touchscreen() {
-	pkgdesc="Xiaomi Redmi Note 8 Pro touchscreen firmware"
-
 	install -Dm644 "$builddir/novatek/nt36672a_begonia_csot.bin.zst" -t \
-		"$subpkgdir/lib/firmware/novatek/"
+		"$pkgdir/usr/lib/firmware/novatek/"
 	install -Dm644 "$srcdir/10-touch-firmware.files" -t \
-		"$subpkgdir/usr/share/mkinitfs/files/"
+		"$pkgdir/usr/share/mkinitfs/files/"
 }
 
 sha512sums="

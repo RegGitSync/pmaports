@@ -1,7 +1,7 @@
 # Kernel config based on: arch/arm64/configs/defconfig
 maintainer="Neil Armstrong <neil.armstrong@linaro.org>"
 pkgname=linux-ayaneo-pocket-s2
-pkgver=7.0_git20260612
+pkgver=7.1_git20260625
 pkgrel=0
 pkgdesc="Ayaneo Pocket S2 kernel fork"
 arch="aarch64"
@@ -27,10 +27,13 @@ makedepends="
 	findutils
 	flex
 	git
+	gcc
+	linux-headers
 	lld
 	llvm
 	openssl-dev
 	perl
+	pahole
 	postmarketos-installkernel
 	python3
 	rust
@@ -43,7 +46,7 @@ makedepends="
 # Source
 _url="https://gitlab.com/superna9999/"
 _repository="linux"
-_commit="d42f74bb3f3372e95cd0525177e2cb83ebb23b17"
+_commit="f23e4dcf9732d1b264de2370a3eb425ac004c87f"
 _defconfig="defconfig"
 _config="config-$_flavor.$arch"
 source="
@@ -84,7 +87,7 @@ package() {
 }
 
 sha512sums="
-f50dc5bcbc511e87d93024fa4430b87cdaaf3314368bcf8a7c24b7461e912bb6a5fb51feff7e5e6b98aa77d533e3bebb79ef276cec9e2eab6e50db657ee2cd83  linux-ayaneo-pocket-s2-d42f74bb3f3372e95cd0525177e2cb83ebb23b17.tar.gz
+abc185abcb3305b31c09df0cac3c1e11fc725584490dd6297367da4916ce927f5ff085a54c316698215e58fa1f87bfc931c92b079fa8b45f1b203d0cf2681149  linux-ayaneo-pocket-s2-f23e4dcf9732d1b264de2370a3eb425ac004c87f.tar.gz
 f7712cb52ab2abae02deb3f90d0bdba83bcdf1af9b5f4fdb97963d729d1a0161301ecb3b5948dcd7a7f182c14e52d3863ec48f22a00276008d3bb0615d29ba68  misc.config
-07089f3297c5206ae1a1a64c5c8438d1d82ca29c4c4651211be74e9786a10956a45bc13ad9bb666a9beb5ca7550948e71bdaa90598bfd4282b2fe57ad9277e1f  config-ayaneo-pocket-s2.aarch64
+ec78f60ded7aa46390bbe9f58fd9a7db673c71b98bb07a7890635e89b1c7965427052d5594293650d0581fc82ca22b0628e2adaef53f2d3065655811bbb0904f  config-ayaneo-pocket-s2.aarch64
 "

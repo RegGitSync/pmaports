@@ -59,19 +59,10 @@ if grep -qr 'deviceinfo_modules_initfs' -- *; then
 fi
 
 POSTMARKETOS_WALLPAPER_PATH='/usr/share/wallpapers/postmarketos.jpg'
-# The excluded devices are "grandfathered in". New devices should not be added here.
 # See https://gitlab.postmarketos.org/postmarketOS/pmaports/-/issues/2529
-if grep -qr $POSTMARKETOS_WALLPAPER_PATH \
-	--exclude-dir='device-pine64-pinetab' \
-	--exclude-dir='device-oneplus-kebab' \
-	--exclude-dir='device-xiaomi-willow' \
-	-- device; then
+if grep -qr $POSTMARKETOS_WALLPAPER_PATH --exclude-dir='archived' -- device; then
 	echo "ERROR: Please don't include configuration files that set the default wallpaper in device-specific packages!"
-	grep --color=always -r $POSTMARKETOS_WALLPAPER_PATH \
-		--exclude-dir='device-pine64-pinetab' \
-		--exclude-dir='device-oneplus-kebab' \
-		--exclude-dir='device-xiaomi-willow' \
-		-- device
+	grep --color=always -r $POSTMARKETOS_WALLPAPER_PATH --exclude-dir='archived' -- device
 	exit_code=1
 fi
 
@@ -120,15 +111,23 @@ if grep -qr '# Maintainer:' -- *; then
 	exit_code=1
 fi
 
-if [ -n "$CI_MERGE_REQUEST_DIFF_BASE_SHA" ]; then
-	# Find all moved or new kernel APKBUILDs in main, community or testing
-	MOVED_OR_NEW_MAINLINE_KERNEL_PACKAGES=$(git show --pretty="" --name-only --diff-filter=AR "$CI_MERGE_REQUEST_DIFF_BASE_SHA"..HEAD | grep "device/\(main\|community\|testing\)/linux-.*/APKBUILD" || true)
+# Disallow sysadmin OpenRC files
+if grep -qr '/etc/local.d' --exclude-dir='archived' -- *; then
+	echo "ERROR: Please replace the '/etc/local.d' script with real OpenRC service files."
+	echo "See https://gitlab.postmarketos.org/postmarketOS/pmaports/-/work_items/4360"
+	grep --color=always -r '/etc/local.d' --exclude-dir='archived' -- *
+	exit_code=1
+fi
 
-	if [ -n "$MOVED_OR_NEW_MAINLINE_KERNEL_PACKAGES" ]; then
-		if [ -n "$(grep -L LLVM=1 $MOVED_OR_NEW_MAINLINE_KERNEL_PACKAGES || true)" ]; then
-			echo "ERROR: An added or moved close-to-mainline kernel package is not being built with LLVM."
+if [ -n "$CI_MERGE_REQUEST_DIFF_BASE_SHA" ]; then
+	# Find all added, modified or renamed kernel APKBUILDs in main, community or testing
+	MODIFIED_MAINLINE_KERNEL_PACKAGES=$(git show --pretty="" --name-only --diff-filter=AMR "$CI_MERGE_REQUEST_DIFF_BASE_SHA"..HEAD | grep "device/\(main\|community\|testing\)/linux-.*/APKBUILD" || true)
+
+	if [ -n "$MODIFIED_MAINLINE_KERNEL_PACKAGES" ]; then
+		if [ -n "$(grep -L LLVM=1 $MODIFIED_MAINLINE_KERNEL_PACKAGES || true)" ]; then
+			echo "ERROR: A new or modified close-to-mainline kernel package is not being built with LLVM."
 			echo "See https://postmarketos.org/edge/2025/11/11/kernels-llvm/ for more details"
-			grep --color=always -L LLVM=1 $MOVED_OR_NEW_MAINLINE_KERNEL_PACKAGES
+			grep --color=always -L LLVM=1 $MODIFIED_MAINLINE_KERNEL_PACKAGES
 			exit_code=1
 		fi
 	fi
@@ -168,6 +167,18 @@ if [ -n "$CI_MERGE_REQUEST_DIFF_BASE_SHA" ]; then
 		if [ -n "$(grep -L '^maintainer="[^"]\+"$' $NEW_APKBUILDS || true)" ]; then
 			echo "ERROR: A new package does not have a maintainer set."
 			grep --color=always -L '^maintainer="[^"]\+"$' $NEW_APKBUILDS
+			exit_code=1
+		fi
+	fi
+
+	# Disallow non-free firmware subpackages
+	CHANGED_APKBUILDS=$(git show --pretty="" --name-only --diff-filter=AMR "$CI_MERGE_REQUEST_DIFF_BASE_SHA"..HEAD | grep APKBUILD || true)
+
+	if [ -n "$CHANGED_APKBUILDS" ]; then
+		if [ -n "$(grep -r 'pkgname-nonfree-firmware' $CHANGED_APKBUILDS || true)" ]; then
+			echo "ERROR: Please remove the nonfree-firmware subpackage(s) and move the firmware to depends in the following APKBUILDs."
+			echo "See https://docs.postmarketos.org/pmaports/main/packaging/firmware-packages.html"
+			grep --color=always -l 'pkgname-nonfree-firmware' $CHANGED_APKBUILDS
 			exit_code=1
 		fi
 	fi

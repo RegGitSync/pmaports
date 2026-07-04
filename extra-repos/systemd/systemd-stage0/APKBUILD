@@ -3,10 +3,10 @@
 # Co-Maintainer: Oliver Smith <ollieparanoid@postmarketos.org>
 maintainer="Clayton Craft <craftyguy@postmarketos.org>"
 pkgname=systemd-stage0
-pkgver=261_rc3
+pkgver=261.1
 _pkgver="${pkgver/_/-}"
 # pkgrel must match systemd!
-pkgrel=2
+pkgrel=1
 pkgdesc="Minimal systemd bootstrap package"
 url="https://github.com/systemd/systemd"
 # armhf: pmb#2618
@@ -132,5 +132,5 @@ package() {
 }
 
 sha512sums="
-facbcb7831fb84a38eaee5804d9aa03382486006cdb559010d6d353ad9a3986b516522cde1f0e0808fb49365859f790dd1caed24875a1c9e339e892d09d2cf30  systemd-261_rc3.tar.gz
+5dbf8b902fbed6e719367266da658b46ed55e76c93b7aa48ebaf9daca36cb19261ebd45cb97139c51227022a8ca3d07da360953bd9b0aebb429dce6d111f7e5c  systemd-261.1.tar.gz
 "

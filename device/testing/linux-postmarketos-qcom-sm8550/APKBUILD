@@ -4,7 +4,7 @@
 
 _flavor="postmarketos-qcom-sm8550"
 pkgname=linux-$_flavor
-pkgver=7.0.0
+pkgver=7.1.2
 pkgrel=1
 pkgdesc="Mainline kernel fork for SM8550"
 arch="aarch64"
@@ -29,7 +29,7 @@ makedepends="
 "
 
 # Source
-_commit="e42d4dd4c83a43e86823520285796b6a7c8f5fdd"
+_commit="fd2fd449268f0733231819f9292edac6a0ee68a0"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/ianchb/sm8550-mainline/archive/$_commit.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64

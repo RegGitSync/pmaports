@@ -405,6 +405,9 @@ mount_subpartitions() {
 					SUBPARTITION_DEV=""
 					continue
 				fi
+				# Some kernels (notably 4.14 with 4K-sector loops) don't fire the
+				# partition scan implicitly via `losetup -P`. Force it.
+				blockdev --rereadpt "$SUBPARTITION_LOOP" 2>/dev/null || true
 				# Ensure that this was the *correct* subpartition
 				# Some devices have mmc partitions that appear to have
 				# subpartitions, but aren't our subpartition.

@@ -2,8 +2,8 @@
 maintainer="Nikroks <nikroks@mainlining.org>"
 pkgname=device-xiaomi-miatoll
 pkgdesc="Xiaomi Redmi Note 9 Pro / Redmi Note 9S"
-pkgver=9
-pkgrel=1
+pkgver=10
+pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -50,7 +50,6 @@ nonfree_firmware() {
 	pkgdesc="GPU, venus, modem and sensor firmware"
 	depends="
 		firmware-xiaomi-miatoll
-		soc-qcom-sm7125-nonfree-firmware
 		hexagonrpcd>=0.3.2-r3
 	"
 

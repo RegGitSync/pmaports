@@ -163,7 +163,7 @@ depends="
 
 # provides=openrc and openrc-settingsd to prevent those packages
 # getting pulled in, as there are some conflicts (dbus)
-provides="busctl openrc-settingsd=$pkgver-r$pkgrel systemd-stage0=$pkgver-r$pkgrel"
+provides="busctl openrc-settingsd=0.$pkgver-r$pkgrel systemd-stage0=$pkgver-r$pkgrel"
 provider_priority=0
 
 install="$pkgname.pre-install"
@@ -395,7 +395,7 @@ udevd() {
 
 	# provides eudev-libs because it doesn't make sense to make a virtual package
 	# for a build-time dependency
-	provides="udev=$pkgver-r$pkgrel eudev-libs=$pkgver-r$pkgrel"
+	provides="udev=0.$pkgver-r$pkgrel eudev-libs=0.$pkgver-r$pkgrel"
 
 	amove usr/bin/udevadm
 	amove usr/lib/libudev*
@@ -605,7 +605,7 @@ x11() {
 }
 
 dev() {
-	provides="eudev-dev=$pkgver-r$pkgrel udev-dev=$pkgver-r$pkgrel systemd-stage0-dev=$pkgver-r$pkgrel"
+	provides="eudev-dev=0.$pkgver-r$pkgrel udev-dev=0.$pkgver-r$pkgrel systemd-stage0-dev=$pkgver-r$pkgrel"
 
 	default_dev
 }

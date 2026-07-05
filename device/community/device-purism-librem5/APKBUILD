@@ -3,8 +3,8 @@
 # Contributor: Clayton Craft <clayton@craftyguy.net>
 maintainer="Alistair Francis <alistair@alistair23.me>"
 pkgname=device-purism-librem5
-pkgver=12
-pkgrel=1
+pkgver=13
+pkgrel=0
 _confver=69
 _purismrel=2
 # <librem5-base ver>.<purism release>
@@ -21,6 +21,8 @@ depends="
 	bluez
 	bluez-deprecated
 	bm818-tools
+	firmware-brcm43752
+	firmware-siliconlabs-rs9116
 	gnss-share
 	i2c-tools
 	iw
@@ -29,8 +31,8 @@ depends="
 	millipixels
 	postmarketos-base
 	postmarketos-base-ui-audio-backend-pulseaudio
-	pulseaudio<9990
 	postprocessd
+	pulseaudio<9990
 	u-boot-librem5
 	u-boot-tools
 	wys
@@ -60,7 +62,6 @@ source="
 "
 subpackages="
 	$pkgname-gnome
-	$pkgname-nonfree-firmware:nonfree_firmware
 	$pkgname-pulseaudio
 	$pkgname-openrc
 	$pkgname-smartcard
@@ -202,12 +203,6 @@ package() {
 		"$pkgdir"/usr/lib/systemd/system
 
 	devicepkg_package $startdir $pkgname
-}
-
-nonfree_firmware() {
-	pkgdesc="Wifi and Bluetooth firmware"
-	depends="firmware-siliconlabs-rs9116 firmware-brcm43752"
-	mkdir "$subpkgdir"
 }
 
 sha512sums="

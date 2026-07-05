@@ -1,38 +1,36 @@
-From f9a0b99e9c078573097ba34485968ec9252bd887 Mon Sep 17 00:00:00 2001
+From fcaedf20d6626cded661efc717cd5e365739e6b6 Mon Sep 17 00:00:00 2001
 From: Stanley Ang <me@stanley.id>
-Date: Thu, 2 Jul 2026 10:05:26 +0700
-Subject: [PATCH] arm64: dts: amlogic: add support for ZTE B860H V1/V2 (S905X)
+Date: Thu, 2 Jul 2026 22:46:07 +0700
+Subject: [PATCH] arm64: dts: amlogic: add support for FiberHome HG680-P
 
-The ZTE B860H V1/V2 is an S905X-based IPTV set-top box. Based on the
-P212 DTS with the following differences:
+The FiberHome HG680-P is an S905X-based IPTV set-top box. Based on the P212 DTS with the following differences:
 - No Bluetooth
-- SDIO WiFi reset GPIO is GPIODV_27 instead of GPIOX_6
 - SDIO bus runs at 100 MHz instead of 50 MHz
 - WiFi is Realtek RTL8189FTV (SDIO ID 0x024c:0xF179)
 ---
  arch/arm64/boot/dts/amlogic/Makefile          |   1 +
- .../dts/amlogic/meson-gxl-s905x-zte-b860h.dts | 212 ++++++++++++++++++
- 2 files changed, 213 insertions(+)
- create mode 100644 arch/arm64/boot/dts/amlogic/meson-gxl-s905x-zte-b860h.dts
+ .../meson-gxl-s905x-fiberhome-hg680p.dts      | 216 ++++++++++++++++++
+ 2 files changed, 217 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/amlogic/meson-gxl-s905x-fiberhome-hg680p.dts
 
 diff --git a/arch/arm64/boot/dts/amlogic/Makefile b/arch/arm64/boot/dts/amlogic/Makefile
-index 57bc440fa55cca..e3ea56b1ba27a0 100644
+index 57bc440fa55cca..fe130e0b6e1068 100644
 --- a/arch/arm64/boot/dts/amlogic/Makefile
 +++ b/arch/arm64/boot/dts/amlogic/Makefile
-@@ -66,6 +66,7 @@ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905w-p281.dtb
+@@ -65,6 +65,7 @@ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905w-jethome-jethub-j80.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905w-p281.dtb
  dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905w-tx3-mini.dtb
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905w-x96-mini.dtb
++dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-fiberhome-hg680p.dtb
  dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-hwacom-amazetv.dtb
  dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-khadas-vim.dtb
-+dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-zte-b860h.dtb
- dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-libretech-cc-v2.dtb
- dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-libretech-cc.dtb
- dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-nexbox-a95x.dtb
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-zte-b860h.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-zte-b860h.dts
+ dtb-$(CONFIG_ARCH_MESON) += meson-gxl-s905x-zte-b860h.dtb
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-fiberhome-hg680p.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-fiberhome-hg680p.dts
 new file mode 100644
-index 00000000000000..76dc95374fbe40
+index 00000000000000..40c31fa539e99a
 --- /dev/null
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-zte-b860h.dts
-@@ -0,0 +1,212 @@
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905x-fiberhome-hg680p.dts
+@@ -0,0 +1,216 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2026 Stanley Ang <me@stanley.id>
@@ -46,34 +44,43 @@ index 00000000000000..76dc95374fbe40
 +/dts-v1/;
 +
 +#include "meson-gxl-s905x-p212.dtsi"
-+#include <dt-bindings/input/input.h>
 +#include <dt-bindings/leds/common.h>
 +#include <dt-bindings/sound/meson-aiu.h>
 +
 +/ {
-+	compatible = "zte,b860h", "amlogic,s905x", "amlogic,meson-gxl";
-+	model = "ZTE ZXV10 B860H";
-+
-+	gpio-keys-polled {
-+		compatible = "gpio-keys-polled";
-+		poll-interval = <20>;
-+
-+		button {
-+			label = "power";
-+			linux,code = <KEY_POWER>;
-+			gpios = <&gpio_ao GPIOAO_2 GPIO_ACTIVE_LOW>;
-+		};
-+	};
++	compatible = "fiberhome,hg680p", "amlogic,s905x", "amlogic,meson-gxl";
++	model = "FiberHome HG680P";
 +
 +	leds {
 +		compatible = "gpio-leds";
 +
-+		led-power {
-+			color = <LED_COLOR_ID_ORANGE>;
++		led-power-green {
++			color = <LED_COLOR_ID_GREEN>;
 +			function = LED_FUNCTION_POWER;
-+			gpios = <&gpio GPIODV_24 GPIO_ACTIVE_HIGH>;
++			gpios = <&gpio GPIOH_8 GPIO_ACTIVE_HIGH>;
 +			default-state = "on";
 +			panic-indicator;
++		};
++
++		led-power-red {
++			color = <LED_COLOR_ID_RED>;
++			function = LED_FUNCTION_POWER;
++			gpios = <&gpio GPIOH_9 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
++
++		led-lan-red {
++			color = <LED_COLOR_ID_RED>;
++			function = LED_FUNCTION_LAN;
++			gpios = <&gpio_ao GPIOAO_5 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "netdev";
++		};
++
++		led-ir {
++			color = <LED_COLOR_ID_RED>;
++			function = "ir";
++			gpios = <&gpio_ao GPIOAO_6 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
 +		};
 +	};
 +
@@ -113,7 +120,7 @@ index 00000000000000..76dc95374fbe40
 +
 +	sound {
 +		compatible = "amlogic,gx-sound-card";
-+		model = "B860H";
++		model = "HG680-P";
 +		audio-aux-devs = <&dio2122h>;
 +		audio-widgets = "Line", "Lineout";
 +		audio-routing = "AU2 INL", "ACODEC LOLP",
@@ -223,11 +230,6 @@ index 00000000000000..76dc95374fbe40
 +&ethmac {
 +	phy-mode = "rmii";
 +	phy-handle = <&internal_phy>;
-+};
-+
-+/* Wireless SDIO reset is GPIODV_27 instead of GPIOX_6 */
-+&sdio_pwrseq {
-+	reset-gpios = <&gpio GPIODV_27 GPIO_ACTIVE_LOW>;
 +};
 +
 +/* RTL8189FTV needs max-frequency set to 100 MHz */

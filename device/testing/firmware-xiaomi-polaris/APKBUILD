@@ -1,7 +1,7 @@
 
 maintainer="Molly Sophia <mollysophia379@gmail.com>"
 pkgname=firmware-xiaomi-polaris
-pkgver=1
+pkgver=2
 pkgrel=0
 pkgdesc="Firmware for Xiaomi Mi Mix2s"
 url="https://github.com/MollySophia/firmware-xiaomi-polaris"
@@ -27,8 +27,7 @@ package() {
 
 firmware_initramfs() {
 	pkgdesc="Files to be included in the initramfs to support osk-sdl"
-	depends="$pkgname"
-	install_if="$pkgname-nonfree-firmware"
+	depends="$pkgname=$pkgver-r$pkgrel"
 	mkdir "$subpkgdir"
 
 	install -Dm644 "$srcdir/30-gpu-firmware.files" \

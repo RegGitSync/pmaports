@@ -1,10 +1,10 @@
 # Reference: https://postmarketos.org/uipkg
 # Co-Maintainer: Pablo Correa Gomez <pabloyoyoista@postmarketos.org>
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
-maintainer="Newbyte <newbyte@postmarketos.org>"
+maintainer="Stefan Hansson <newbyte@postmarketos.org>"
 pkgname=postmarketos-ui-gnome-mobile
 pkgver=4
-pkgrel=4
+pkgrel=6
 pkgdesc="(Wayland) Gnome Shell patched to adapt better to phones (Experimental)"
 url="https://gnome.org/"
 arch="noarch !armhf !riscv64" # gnome-shell / riscv64: mutter-mobile
@@ -13,7 +13,6 @@ depends="
 	bolt
 	dbus-x11
 	gdm
-	gnome-backgrounds
 	gnome-browser-connector
 	gnome-control-center
 	gnome-initial-setup
@@ -34,6 +33,7 @@ depends="
 	"
 _pmb_recommends="
 	gnome-mobile-extensions-app
+	postmarketos-welcome
 	"
 subpackages="$pkgname-openrc"
 options="!check pmb:systemd"

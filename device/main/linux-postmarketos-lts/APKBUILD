@@ -1,7 +1,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-lts
-pkgver=6.18.13
+pkgver=6.18.38
 pkgrel=0
 _kver=${pkgver%.*}
 pkgdesc="LTS Kernel"
@@ -20,10 +20,12 @@ options="
 	pmb:kconfigcheck-community
 	pmb:kconfigcheck-immutable
 	pmb:kconfigcheck-rust
+	pmb:kconfigcheck-selinux
 	pmb:kconfigcheck-uefi
 	pmb:kconfigcheck-virt
 "
 makedepends="
+	bash
 	bison
 	clang
 	clang-libclang
@@ -31,6 +33,7 @@ makedepends="
 	elfutils-dev
 	findutils
 	flex
+	kmod
 	linux-headers
 	lld
 	llvm
@@ -48,9 +51,22 @@ makedepends="
 "
 replaces="linux-lts"
 
-# Source
+# powerpc boot wrapper patches:
+# Necessary for compilation without cross GCC in PATH, cherry-picked from
+# Nathan's fork, he does not have time to upstream them right now but would be
+# happy if someone else did:
+# https://lore.kernel.org/linuxppc-dev/aXs8sgAcci9FKKpx@luna/
+#
+# Patch #4 is a backport that makes ftrace work when built with Clang, which is
+# required for passing kconfigcheck.
 source="
 	linux-$_kver.tar.xz::https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$_kver.tar.xz
+
+	0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
+	0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
+	0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
+
+	0004-powerpc64-ftrace-fixes-clang-build-issues.patch
 
 	config-lts.aarch64
 	config-lts.armv7
@@ -100,25 +116,29 @@ package() {
 	make modules_install $_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+	rm -f "$pkgdir"/usr/lib/modules/*/build "$pkgdir"/usr/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
 
 sha512sums="
-cc33f4a83116c0ac91b2c3288eaa6224096f11860aca1ad7ac2ffa5f464bcc5d8dab0df0b3dc4e87c0d5adb905928fad3f96e42084b008836f1c3790d3fde639  patch-6.18.13.patch.xz
+0ea26f5c06f1c5ceba6e2c468129e0195eb314c56abeedc7064bef0596f3ca96da4e220312a8a8b20cde210aceec304f47fb8927c54238dbdb5d387aefb0a9d8  patch-6.18.38.patch.xz
 88599ffdec96d150c1feb9b261ba93bb0301a9d0e1ad6bef7aeab1f5372cbfc57d8b43c7e902bd8f76921d1dbd8189663c142ea869e51d0e2b483b150ee00fe0  linux-6.18.tar.xz
-1cf476dba9d836efb15f769ca7a07eae44acbe7d81089b22f65f1af6f3c9a867483a9672fc238831b8ee5c4e92bd35ba838cecaf7f694def682a97f429587be8  config-lts.aarch64
-fe73496c838738727cd320de34b60c7ccd4073d0208e60997f6fc50d82125c07d4620ca6b37a79ba17d9f7ebc4bde2a236d4f2c832de7dbc62963042eb6f7a38  config-lts.armv7
-c59e9d68fe3e78fd08a1ee10d3e25a1bdc5cd1e5c0b49a08d04c7d2dffddcd13d135027f4e39b404396e4170820847a3084c43e2dae27413c18cf14576bd1cb4  config-lts.loongarch64
-c645edd46d13cd10610eeff2ae1b704a48041c6389d063ee267c62032ee621dec226869419363c36453fdad139a6117d81c85759da616807448d24c2a2824ff3  config-lts.ppc64le
-eda08b397a281e83aa9db23e56bbf4b0633f32fd8e5ed4d805cbddaedb2a299de1cee56bbb0e52c2bc2b68acc889bee01caee6f7f354ed18520ccd8552767ff9  config-lts.riscv64
-a6644ae4a42e8d45f1968dc67059588278ca7840f69c2036d417ae1eeb026c7fac9e5f5a74006aa91899c891a954022154f44cba3670c83eac11f1fc1107959c  config-lts.x86
-2751d98f5836d2b8d445437ef7298c5cd5eaa8897d91f9a643402742138b55e5011a2cfe12a3ae4d281e78bf41695d2f57b5ee3ae361d2f1b291f5a5703dcbe9  config-lts.x86_64
+1f11df2480e9f691573283597160b4c806e492cdca4825f3acb3afb70bde43abfab487bcde1f5553b431a702a0039479d041b0ce7859970e706b5a51d2ad8fb0  0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
+26521a9c9ea769534095dc4e306babadc8bcbaf03d7faa523c377e41ba0f742ecd0490fa27791d895f729c3ae8845297dca59b4db2475e7f078e689c447430bc  0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
+302c20c85559fc9b3b2420ed25be1bfbb76c87f2a470e4141c32e9542cf1f5c6b3b5a7847231a3eaa0f6bc0e5942d0c1599e807175dcf5e63469704c3d6adde3  0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
+166f9151618780afb269822d2b0c7580830fc47b20aa1ea08006a119a5234277fba5dbc2d0be469f3285bf8debd2dcfd078c2f92b206d1491620d94432c7b11b  0004-powerpc64-ftrace-fixes-clang-build-issues.patch
+78ae9bc73f8cb7088ba14c7f068bc34ad4e58d09ac10b7ab81947014417516d0bf80993e7c79671046606564336e09cdad3afc394c5c724e507a8a572bff283d  config-lts.aarch64
+9d880ce99f0517940e9f343da72d17605c3fff4ae5cab2f8cd8949c3458c529b8d2a7a6159ee8c5e04450a53a4d0c454a22a97863389942da7ea7953b9cdea39  config-lts.armv7
+807de497b259fdb555dae56f1727f30d333c15c89c8adce1d5cd01cde2bd06a8423d10f9937c4cad13fad4cea9ccbf61716109d08680e80c090d48ae9178e25c  config-lts.loongarch64
+e534389df5bb52ed08cddd4343a4b53ad8eb9ac5244783f63d6e82a69289a83abc5ce1a4b27a0c2fdddcd28314d37f6b72f353c020df1e64413fd4b4effc2374  config-lts.ppc64le
+ddc183fc9ed7b5b3460998e92872565fee6f942ef7b74ded608fd96a6a7fcb4d98157a7fcd91f8d440b4c8c5acf369a5b1f5d677afb31988b924df04bb7635d0  config-lts.riscv64
+b6634a7da30033f8d2d22aca1ce624d14d84b8438a246a3d809a8e8df8d245ae093ee2cf1149725db1a05b51b8c8741d5a66197d5fa7250cd490ba828e04a0e4  config-lts.x86
+b376f9466336d5cf7773ff5d9746cb5633e00c7380f1e84b0a4632e426371c44b62c96957ed72b8f3d7986bc9e0075707178bdeb20cfa85b4042afb82bcba9ef  config-lts.x86_64
 "

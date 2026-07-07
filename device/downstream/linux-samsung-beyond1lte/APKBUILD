@@ -1,9 +1,10 @@
 # Reference: <https://postmarketos.org/vendorkernel>
 # Kernel config based on: arch/arm64/configs/exynos9820-beyond1lte_defconfig
 
+maintainer="chiffa <chiffathefoxx@gmail.com>"
 pkgname=linux-samsung-beyond1lte
 pkgver=4.14.316
-pkgrel=0
+pkgrel=1
 pkgdesc="Samsung Galaxy S10 kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -19,12 +20,11 @@ makedepends="
 	devicepkg-dev
 	findutils
 	flex
+	lld
+	llvm
 	openssl-dev
 	perl
 "
-
-export CC="clang"
-export HOSTCC="clang"
 
 # Source
 _repository="android_kernel_samsung_exynos9820"
@@ -47,7 +47,7 @@ prepare() {
 
 build() {
 	unset LDFLAGS
-	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+	make O="$_outdir" ARCH="$_carch" LLVM=1 \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }
 

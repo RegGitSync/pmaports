@@ -1,8 +1,8 @@
 maintainer="Luca Weiss <luca@lucaweiss.eu>"
 _flavor="postmarketos-qcom-msm8974"
 pkgname=linux-$_flavor
-pkgver=6.15.11
-pkgrel=0
+pkgver=6.16.12
+pkgrel=1
 pkgdesc="Mainline Kernel fork for MSM8974 devices"
 arch="armv7"
 _carch="arm"
@@ -54,7 +54,7 @@ package() {
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
@@ -64,6 +64,6 @@ package() {
 }
 
 sha512sums="
-85672905730f3c2dbf0cbfb556a8f06ea627964672f1ac214c307eb14465e21e3a0a0aec58b3f64d09930db765010dde545a3f4eaa5e7069241a17dce73d7549  linux-v6.15.11-msm8974.tar.gz
-87b835593650f898278aa7216eedb552796a8a7e06eab07f55a033518f8bae950e089555aef56c7b6146cee974c9a613b4cbfb2b37c461f54297867b2411e650  config-postmarketos-qcom-msm8974.armv7
+6e67e6c86e36e235bad086ea2984c0885eb2e47264e667aa177df8ed7c29edbb23a866407dc59bdd39cfb95f6677e755a426eff485a93898c01997a6a6fcdd9c  linux-v6.16.12-msm8974.tar.gz
+d23278b82753ee922d66075178ea813df166d25145dcd155ab51cce28afad57a21dc94e8531de976e455126ef8c442e0c9acc8d038337b7269c03fa1a81fef4b  config-postmarketos-qcom-msm8974.armv7
 "

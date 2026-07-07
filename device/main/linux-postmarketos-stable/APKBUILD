@@ -1,7 +1,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Aelin <aelin@postmarketos.org>"
 pkgname=linux-postmarketos-stable
-pkgver=6.19.3
+pkgver=7.1.3
 pkgrel=0
 _kver=${pkgver%.*}
 pkgdesc="Stable Kernel"
@@ -20,10 +20,12 @@ options="
 	pmb:kconfigcheck-community
 	pmb:kconfigcheck-immutable
 	pmb:kconfigcheck-rust
+	pmb:kconfigcheck-selinux
 	pmb:kconfigcheck-uefi
 	pmb:kconfigcheck-virt
 "
 makedepends="
+	bash
 	bison
 	clang
 	clang-libclang
@@ -31,6 +33,7 @@ makedepends="
 	elfutils-dev
 	findutils
 	flex
+	kmod
 	linux-headers
 	lld
 	llvm
@@ -48,9 +51,19 @@ makedepends="
 "
 replaces="linux-stable"
 
-# Source
+# powerpc boot wrapper patches:
+# Necessary for compilation without cross GCC in PATH, cherry-picked from
+# Nathan's fork, he does not have time to upstream them right now but would be
+# happy if someone else did:
+# https://lore.kernel.org/linuxppc-dev/aXs8sgAcci9FKKpx@luna/
 source="
 	linux-$_kver.tar.xz::https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$_kver.tar.xz
+
+	0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
+	0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
+	0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
+
+	0004-resolve_btfids-preserve-tag-and-parameter-names-when.patch
 
 	config-stable.aarch64
 	config-stable.armv7
@@ -100,25 +113,29 @@ package() {
 	make modules_install $_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+	rm -f "$pkgdir"/usr/lib/modules/*/build "$pkgdir"/usr/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
 
 sha512sums="
-42cf563be07254942e3873a91241f423753d4a4dc70e18bc8ac210519c0642aef45ea91fdd0e359b7e428a87c5e091e8be3e1199ebeaf679bfc7a09af5e1206e  patch-6.19.3.patch.xz
-01b29c7f4e5bc0c9802794c2cd027fece825f90417be229a71e60eefce530010d5d301749c54ae744e9d4a483518e769e2bb7e6e9209687681ad7fff11c3ed86  linux-6.19.tar.xz
-f22282b2f7a43915d83af77310345597c6ce1cfa02f1340efb30fa02191e67649c4aa2e96cac1f5022c046f3ffb7979bedefad66db7833a2b1a65d19ca32af4b  config-stable.aarch64
-324458036ae7d5b0a27974f886b5ca1c24764cdbb9735e848d5203c26b672a383e39cafa3465e2eb935a772dba6276954b48f5d8042a451af05b272522be8faf  config-stable.armv7
-0abed5421a1eaf1a2088ccda334ac66b6f034832fd9904e3f24796f5cc3020f48bcb734bb391d4dd7f11b0279299060f062e1aa5a838ce45a7dda5e9e41e3675  config-stable.loongarch64
-6d96798e7171a36f0bf4219ad7f2685fd916fff70766cfc3623580c7d0de502562dc136df1cae88ef63d6f67535cd94ecc95adb460977a858153a75754877eb9  config-stable.ppc64le
-685d0808d72f14944c18f95ddef9c7f7aed6d648d5c277e8ea92814cc8b8a15cd21896cb6be643cb34ffe9d1cd0c98f69e3f5394074a3a28c2f9957566f5a540  config-stable.riscv64
-ac380e28ef198ee49964cbcb27dd875cf26b3d01f4b0f4cd6602a24cbdaae25a62ecf624897fde370fc6850bccba7e425fad61fccf8b3569ad4ccd6fc9fe5e49  config-stable.x86
-01676831e44407e8b1bd088f66dba2ada1681d2c5892d002a631d21505d6c6d2c4bb251e3f376316d3f7fcae6da5cacdecd1bb3176342bacfad9786c651efdbc  config-stable.x86_64
+0dc615d978425ae4a5cc57d61b81a6b648a30b3d7cde0a3efb1244660ef572bb2f3d2292642346194fcb549a22cde2d2b9af6fe237b22b8eefc1ca905f6e14cb  patch-7.1.3.patch.xz
+d4d9c45261813559341c67ea53d4a47f5a04d1ad15e3c2b8222a09b5483380d2bfd31b8c675e144db2eb91f560d6cb28f66187a5ea4f24f6dfb82a4ad48064cc  linux-7.1.tar.xz
+1f11df2480e9f691573283597160b4c806e492cdca4825f3acb3afb70bde43abfab487bcde1f5553b431a702a0039479d041b0ce7859970e706b5a51d2ad8fb0  0001-WIP-arch-powerpc-boot-Support-LLVM-1-in-wrapper-scri.patch
+26521a9c9ea769534095dc4e306babadc8bcbaf03d7faa523c377e41ba0f742ecd0490fa27791d895f729c3ae8845297dca59b4db2475e7f078e689c447430bc  0002-WIP-arch-powerpc-boot-Use-z-notext-for-pseries-image.patch
+302c20c85559fc9b3b2420ed25be1bfbb76c87f2a470e4141c32e9542cf1f5c6b3b5a7847231a3eaa0f6bc0e5942d0c1599e807175dcf5e63469704c3d6adde3  0003-WIP-arch-powerpc-boot-Add-z-norelro.patch
+4e705e038a91466a86fc5317b0028c2220aa1e7a4807e5d86db2f9ac815a927c59666a8f21ed50c4632147d3ce183d8042378a76f95341dbcd3db1047faf39e3  0004-resolve_btfids-preserve-tag-and-parameter-names-when.patch
+1e7ce8a8182d4bbf62608a82e2a24732c4721a4542c2b0e3f171fd9dc190234c9601ec7c872512a09acd56d5e118eb6a99c7ba1b848b45df3aaec537ab21da0f  config-stable.aarch64
+5452624a2926d83e1d8e9444d040a034889fd9a77c3af55572747a61ebeed9167b84f9d7519d5f7f2698a2760d1bddc6269d807638734e624b9d5a219e10f73b  config-stable.armv7
+5b1b4931d815987f4172904bfeb8b4ad6422656ebad68037886e3521316c1b746bef7596ce78e4bc741b6a7fa440941e039f633267d9c22f242f2f0b57ebfd19  config-stable.loongarch64
+79e2db3c81145cf65e7c76f737a9067f63f295f99591d9faac2c25fab8245d49ffdc062a5e4c1f505837b3615e21dfefb27f4bfce5a825a3efbd7a400c33f1dd  config-stable.ppc64le
+9ef899be02514fe570ffa11300220453f39f7da36a9af34ed7d9bf6ba24a8782ce0f36cf59014d7f90a3885abee8b24955624a8e1ff87b717836346253759712  config-stable.riscv64
+1168b580ecc28f3f46d36b7046efde92e1e808c0f2caf0056c0b757b7d16c7c0721b20ffa7b11e15191fe07fb30b0f6bc9e62c1763b032df130b035e86094138  config-stable.x86
+48b8c89cd57dad20e08f1c15a9d1c490a538a9a1d74949dd374a7802e1596ec89e132c2358b13d9717be2966b764f86aa8c12e56b2007387db3e8025d82b1f8a  config-stable.x86_64
 "

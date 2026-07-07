@@ -1,9 +1,8 @@
-
 maintainer="Luca Weiss <luca@lucaweiss.eu>"
 _flavor="postmarketos-qcom-milos"
 pkgname=linux-$_flavor
-pkgver=6.19.0
-pkgrel=0
+pkgver=7.0.8
+pkgrel=2
 pkgdesc="Mainline Kernel fork for Qualcomm Milos SoC (SM7635, etc.) devices"
 arch="aarch64"
 _carch="arm64"
@@ -12,16 +11,20 @@ license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-community
+	pmb:kconfigcheck-uefi
 	"
 makedepends="
 	bison
 	clang
+	elfutils-dev
 	findutils
 	flex
 	installkernel
+	linux-headers
 	lld
 	llvm
 	openssl-dev
+	pahole
 	perl
 	python3
 	zstd
@@ -34,6 +37,7 @@ _tag="v$pkgver-milos"
 # Source
 source="
 	https://github.com/milos-mainline/$_repo/archive/refs/tags/$_tag/$_repo-$_tag.tar.gz
+	0001-resolve_btfids-preserve-tag-and-parameter-names-when.patch
 	$_config
 "
 builddir="$srcdir/$_repo-$pkgver-milos"
@@ -50,14 +54,19 @@ build() {
 }
 
 package() {
-	install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+	# ZBOOT EFI decompressor for EFI booting
+	install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
+		"$pkgdir/boot/linux.efi"
+
+	# Old GZIP'd kernel image for boot.img compatibility
+	install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
 		"$pkgdir/boot/vmlinuz"
 
 	make modules_install dtbs_install \
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
@@ -67,6 +76,7 @@ package() {
 }
 
 sha512sums="
-377cc068ddae611c42539686920cd6f113a89dbd823e216ae4bb65e1257306d0b1b42d28db1388da1b3e21e5730bdb66714087bcf92af82ad7678f65526d450d  linux-v6.19.0-milos.tar.gz
-eb0c1a983a7c5e4f9469f28a23880a84b553f3375d9363d15a2416bd21ad69397ae584a6599147ce7dc77db3a603a87c50155a4eeb3b6f2f2fb8041eba2449f4  config-postmarketos-qcom-milos.aarch64
+a7debceb428eb51fcfaedf373d0b6e920edffbabe5cc1777b72a910c2fd0014f8140da33f46800f038b97116e84dcde675dfb160105c5fc46e7d58fba759da51  linux-v7.0.8-milos.tar.gz
+4e705e038a91466a86fc5317b0028c2220aa1e7a4807e5d86db2f9ac815a927c59666a8f21ed50c4632147d3ce183d8042378a76f95341dbcd3db1047faf39e3  0001-resolve_btfids-preserve-tag-and-parameter-names-when.patch
+a30a3028644ba9703659923109678ab20bbeeda93f9e51e6e4725688d453cc75d2f2708d4f70da1cc203ca1629cf9d5b4678226f90240ce9afe5e9b827865a92  config-postmarketos-qcom-milos.aarch64
 "

@@ -1,7 +1,7 @@
-maintainer="Alexey Minnekhanov <alexeymin@postmarketos.org>"
+maintainer="Barnabas Czeman <barnabas.czeman@postmarketos.org>"
 pkgname=lk2nd
-pkgver=21.0
-pkgrel=0
+pkgver=22.0
+pkgrel=2
 pkgdesc="Secondary little kernel (lk) bootloader for several Qualcomm devices"
 arch="armv7 aarch64"
 url="https://github.com/msm8916-mainline/lk2nd"
@@ -44,6 +44,7 @@ if [ "$CARCH" = "armv7" ]; then
 		$subpackages
 		$pkgname-msm8226
 		$pkgname-msm8226-htc-memul:msm8226_htc_memul
+		$pkgname-msm8960
 		$pkgname-msm8974
 		$pkgname-msm8974-htc-m8:msm8974_htc_m8
 		$pkgname-msm8974-lg-hammerhead:msm8974_lg_hammerhead
@@ -88,6 +89,7 @@ build() {
 		_build lk2nd-msm8974 BOOTLOADER_OUT=lg-hammerhead LK2ND_QCDTBS=""
 		_build lk2nd-msm8226
 		_build lk2nd-msm8226 BOOTLOADER_OUT=htc-memul SCRATCH_ADDR=0x20000000 SCRATCH_ADDR_512MAP=0x20000000 SCRATCH_SIZE_512MAP=0x10000000
+		_build lk2nd-msm8960
 	fi
 }
 
@@ -146,6 +148,11 @@ msm8226_htc_memul() {
 		"$subpkgdir"/boot/lk2nd.img
 }
 
+msm8960() {
+	install -Dm644 "$builddir"/build-lk2nd-msm8960/lk2nd.img \
+		"$subpkgdir"/boot/lk2nd.img
+}
+
 sha512sums="
-a5f1522c713cfe3f5b1ae3b31005327f5eea7c9e14031dec51e5c581fec97708984fcc1f7cdd3596faaa6f04bf2c4dfb2b5eab0ed36ceb2af5bb0551c7153d2d  lk2nd-21.0.tar.gz
+a09854fc967a42c0bcfa273e665839d101cd7ccfb66312f0f5f87109879578aad5875e699d745d04317a1a6c014ad9aae9f33485df09206e79523d88891de85b  lk2nd-22.0.tar.gz
 "

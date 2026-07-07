@@ -3,7 +3,7 @@
 maintainer="Casey Connolly <kcxt@postmarketos.org>"
 pkgname=device-oneplus-fajita
 pkgdesc="OnePlus 6T"
-pkgver=24
+pkgver=27
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -12,13 +12,13 @@ options="!check !archcheck"
 depends="
 	alsa-ucm-conf-sdm845
 	firmware-oneplus-sdm845>=9
+	firmware-oneplus-sdm845-sensors
 	hexagonrpcd>=0.3.2-r3
 	linux-postmarketos-qcom-sdm845
 	mkbootimg
 	postmarketos-base
 	soc-qcom
 	soc-qcom-modem
-	soc-qcom-pd-mapper
 	soc-qcom-qbootctl
 	systemd-boot
 	unl0kr-fbforcerefresh
@@ -59,13 +59,17 @@ package() {
 		-t "$pkgdir"/usr/lib/systemd/system-preset
 }
 
+# Cannot use default_openrc because q6voiced uses the openrc config path,
+# even on systemd, and the default_openrc function moves that path to the
+# subpackage
 openrc() {
-	default_openrc
+	install_if="$pkgname=$pkgver-r$pkgrel openrc"
 	depends="hexagonrpcd-openrc openrc"
+	mkdir -p "$subpkgdir"
 }
 
 pmtest() {
-	depends="bootrr qrtr postmarketos-test-unl0kr"
+	depends="postmarketos-test-bootrr qrtr postmarketos-test-unl0kr"
 	install_if="$pkgname=$pkgver-r$pkgrel postmarketos-mkinitfs-hook-ci"
 
 	mkdir -p "$subpkgdir"

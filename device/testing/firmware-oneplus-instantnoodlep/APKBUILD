@@ -1,6 +1,6 @@
-maintainer=""
+maintainer="kouling <k0ul1ng@proton.me>"
 pkgname=firmware-oneplus-instantnoodlep
-pkgver=1
+pkgver=2
 pkgrel=0
 pkgdesc="Firmware for OnePlus 8 Pro (instantnoodlep)"
 url="https://github.com/pangwalla/oneplus-instantnoodlep-firmware"

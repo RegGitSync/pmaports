@@ -1,8 +1,8 @@
 # Co-Maintainer: Pablo Correa Gomez <pabloyoyoista@postmarketos.org>
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
-maintainer="Newbyte <newbyte@postmarketos.org>"
+maintainer="Stefan Hansson <newbyte@postmarketos.org>"
 pkgname=postmarketos-base-ui-gnome
-pkgver=10
+pkgver=11
 pkgrel=2
 pkgdesc="Meta package for shared configuration for GNOME-based UIs"
 url="https://postmarketos.org"
@@ -13,6 +13,7 @@ depends="
 	gcr-ssh-agent
 	glycin-loaders-all
 	glycin-thumbnailer
+	gnome-backgrounds
 	gnome-bluetooth
 	gnome-keyring
 	gst-thumbnailers
@@ -31,12 +32,19 @@ depends="
 source="
 	00_postmarketos-base-ui-gnome.gschema.override
 	10_postmarketos-green-accent.gschema.override
-	10_mutter-fractional-scaling.gschema.override
+	50-duranium.conf
 	"
 options="!check"
-subpackages="$pkgname-openrc"
+subpackages="
+	$pkgname-duranium
+	$pkgname-openrc
+	gnome-app-provider-gnome-software:gnome_software
+	gnome-app-provider-bazaar:bazaar
+	"
+install="$pkgname-openrc.post-install $pkgname-openrc.post-upgrade"
 
 _pmb_recommends="
+	cups
 	decibels
 	firefox-esr
 	flatpak
@@ -48,9 +56,8 @@ _pmb_recommends="
 	gnome-console
 	gnome-contacts
 	gnome-maps
-	gnome-software
-	gnome-software-plugin-apk
 	gnome-text-editor
+	gnome-user-share
 	gnome-weather
 	gst-libav
 	gst-plugins-bad
@@ -60,19 +67,21 @@ _pmb_recommends="
 	loupe
 	nautilus
 	papers
+	rygel
 	showtime
 	snapshot
 	tuned-ppd
 "
 
 package() {
+	depends="$depends gnome-app-provider"
+
 	install -Dm644 -t "$pkgdir"/usr/share/glib-2.0/schemas \
 		"$srcdir"/*.override
 }
 
 openrc() {
 	install_if="$pkgname=$pkgver-r$pkgrel openrc"
-	install="$subpkgname.post-install $subpkgname.post-upgrade"
 	depends="
 		apk-polkit-rs-openrc
 		elogind
@@ -87,8 +96,35 @@ openrc() {
 	mkdir "$subpkgdir"
 }
 
+duranium() {
+	pkgdesc="$pkgdesc (Duranium)"
+	install_if="$pkgname=$pkgver-r$pkgrel postmarketos-duranium"
+	depends="gnome-app-provider-bazaar"
+
+	install -Dm644 "$srcdir"/50-duranium.conf \
+		-t "$subpkgdir"/usr/lib/kernel-cmdline.d
+}
+
+gnome_software() {
+	pkgdesc="Provider that installs GNOME Software"
+	provides="gnome-app-provider"
+	provider_priority=100
+	depends="gnome-software gnome-software-plugin-apk"
+
+	mkdir -p "$subpkgdir"
+}
+
+bazaar() {
+	pkgdesc="Provider that installs Bazaar"
+	provides="gnome-app-provider"
+	provider_priority=90
+	depends="bazaar"
+
+	mkdir -p "$subpkgdir"
+}
+
 sha512sums="
 39b5bb5e669756e2a308ab61b7901e76a9eff9e37c82d50bd9ff77800e72c19b580256f617a2ad0949c1746ab4e163e5ce009c134ab77f8a32f758b1b963862e  00_postmarketos-base-ui-gnome.gschema.override
 c255b0914043f09ef5cc56d50c26e9c8885af128abc3ed5494606bd304eefdeb761ed3bc2d5f86f7c3bfb16f7fc21ca1a6d954c8d21e73e7a5e7612a84a78b7c  10_postmarketos-green-accent.gschema.override
-7c73a011332305a7e811df5dca1b819b41e4cab737384ecb211e88cf6e4aa1027a75ce33163562e839847d6be006cf74d71083de4c3efc78f432355d9a6df20b  10_mutter-fractional-scaling.gschema.override
+d48775a344d221309fc4f6ab96ec9cd5e871290f940deb967369b8c65dcef570cc44f7c4e7980153390f9da2518fdcc4c0e0687e9e32a984f712bdb62ab65e3d  50-duranium.conf
 "

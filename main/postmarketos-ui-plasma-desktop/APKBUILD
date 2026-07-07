@@ -1,17 +1,17 @@
 # Reference: https://postmarketos.org/uipkg
 maintainer="Bart Ribbers <bribbers@disroot.org>"
 pkgname=postmarketos-ui-plasma-desktop
-pkgver=3
-pkgrel=6
+pkgver=5
+pkgrel=0
 pkgdesc="(Wayland) KDE Desktop Environment (works well with tablets)"
 url="https://www.kde.org"
 # armhf and riscv64 blocked by plasma
-arch="noarch !armhf !riscv64"
+# x86 blocked by firefox
+arch="noarch !armhf !riscv64 !x86"
 license="GPL-3.0-or-later"
 depends="
 	plasma
 	postmarketos-base-ui-plasma
-	sddm
 	"
 _pmb_recommends="
 	ark
@@ -66,13 +66,14 @@ extras() {
 
 openrc() {
 	install_if="$pkgname=$pkgver-r$pkgrel openrc"
-	depends="openrc"
+	depends="openrc sddm"
 
 	mkdir -p "$subpkgdir"
 }
 
 systemd() {
 	install_if="$pkgname=$pkgver-r$pkgrel systemd"
+	depends="plasma-login-manager"
 
 	mkdir -p "$subpkgdir"
 }

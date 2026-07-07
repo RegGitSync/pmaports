@@ -44,10 +44,6 @@ class Device:
 
         return Template(fragment_tmpl).render(device=self)
 
-    @property
-    def is_present_in_ci(self):
-        return bool(self.gitlab_ci_fragment)
-
     @cached_property
     def pmaports_path(self) -> Path:
         # Find the root of pmaports
@@ -77,7 +73,7 @@ class Device:
         return {"postmarketos-mkinitfs-hook-ci"}
 
     @cached_property
-    def package_dependencies(self) -> list[str]:
+    def package_dependencies(self) -> set[str]:
         # HACK: Work around a bug in depends_recurse which prevents listing all the dependencies
         # Bug: https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/issues/2623
         return {"postmarketos-initramfs"}
@@ -129,7 +125,7 @@ class Device:
                     dev = cls(device.codename)
 
                     # Ignore devices that do not have a gitlab ci fragment,
-                    # since we won't be able to make use of them
+                    # since adding that fragment is how we mark them as DUTs
                     if not dev.gitlab_ci_fragment:
                         continue
 
@@ -213,11 +209,10 @@ if __name__ == "__main__":
             devices_under_test=devices_under_test,
             packages_modified=packages_modified,
             archtag={
-                Arch.x86_64: "shared",
-                Arch.x86: "shared",
-                Arch.aarch64: "arm64",
-                Arch.armv7: "qemu",
-                Arch.armhf: "qemu",
+                Arch.x86_64: "x86_64",
+                Arch.x86: "x86",
+                Arch.aarch64: "aarch64",
+                Arch.armv7: "armv7",
                 Arch.riscv64: "qemu",
                 Arch.ppc64le: "ppc64le",
                 Arch.loongarch64: "loongarch64",

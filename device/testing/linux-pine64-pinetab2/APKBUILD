@@ -1,9 +1,9 @@
 # Reference: <https://postmarketos.org/vendorkernel>
 # Kernel config based on: arch/arm64/configs/pinetab2_defconfig
 # Co-Maintainer: Stefan Hansson <newbyte@postmarketos.org>
-maintainer="Danct12 <danct12@disroot.org>"
+maintainer="Dang Huynh <dang.huynh@mainlining.org>"
 pkgname=linux-pine64-pinetab2
-pkgver=6.17.8
+pkgver=7.0.12
 _danctnix_kernel_rel=1
 pkgrel=0
 pkgdesc="Pine64 PineTab 2 mainline"
@@ -32,14 +32,20 @@ makedepends="
 _tags="v$pkgver-danctnix$_danctnix_kernel_rel"
 _config="config-$_flavor.$arch"
 source="
-	$pkgname-$_tags.tar.gz::https://codeberg.org/DanctNIX/linux-pinetab2/archive/$_tags.tar.gz
+	linux-$pkgver.tar.xz::https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/linux-$pkgver.tar.xz
+	$_tags.patch.zst::https://codeberg.org/DanctNIX/linux-pinetab2/releases/download/$_tags/$_tags.patch.zst
 	$_config
 "
-builddir="$srcdir/linux-pinetab2"
+builddir="$srcdir/linux-$pkgver"
 _outdir="out"
 
 prepare() {
 	default_prepare
+
+	# Decrunch the patch file and apply it to the tree
+	zstd -d "$(readlink $srcdir/$_tags.patch.zst)" -o "$srcdir/$_tags.patch"
+	patch -p1 -i "$srcdir/$_tags.patch"
+
 	cp "$srcdir/config-$_flavor.$CARCH" .config
 }
 
@@ -56,7 +62,7 @@ package() {
 	make modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
@@ -66,6 +72,7 @@ package() {
 }
 
 sha512sums="
-8d2dc3222d1dac89996a3432c5b8fd5c2f21b1926a87b7bb2352f41722de46510f340e8972d1b29b077912a2ea7b82c869d42f866ec8ca2a1839a5a2fd6e88ff  linux-pine64-pinetab2-v6.17.8-danctnix1.tar.gz
-18ecd2da7a9668a71b6236641132bbffce527040c2d0e2268eb15900c932757020f87dda2bad0c0e4b3507f7b5b7e43b4b757320e6f9f5b1c69b6a4cc77c8977  config-pine64-pinetab2.aarch64
+5c1df7992b8b78ba28b441a5efdb3fd8d07c2a0ce1421e42a409001dea4b8bdf1aa2bda26645439603c3a903a00d7dfa14324ad2f59f8131174c83d1a5da2f45  linux-7.0.12.tar.xz
+b24aadf37f85285edca551d1fd8625755e6db121a760143e468a48c7eb45ffbc3aeff9aea1666afc74a6e7f8ed75944a848c1f9b1ae37d2ad2b3c4412b5b0873  v7.0.12-danctnix1.patch.zst
+77b54e385f63436a6fa0a595149d626aae7026dbd748ab121bcbaa88a0e7cf156239033867d8f7acd51b42f04c6cfe9de1c20cc7f687491afe836a7b4759763f  config-pine64-pinetab2.aarch64
 "

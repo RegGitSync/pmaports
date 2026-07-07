@@ -1,6 +1,6 @@
-maintainer="Bart Ribbers <bribbers@disroot.org>"
+maintainer="team/kde <bribbers@disroot.org>"
 pkgname=drkonqi
-pkgver=6.6.0
+pkgver=6.7.2
 pkgrel=0
 pkgdesc="The KDE crash handler"
 # armhf blocked by qt6-qtdeclarative -> ki18n
@@ -34,7 +34,6 @@ makedepends="
 	kuserfeedback-dev
 	kwallet-dev
 	kwidgetsaddons-dev
-	py3-chai
 	qt6-qtbase-dev
 	samurai
 	syntax-highlighting-dev
@@ -45,7 +44,10 @@ case "$pkgver" in
 	*.90*) _rel=unstable;;
 	*) _rel=stable;;
 esac
-subpackages="$pkgname-lang"
+subpackages="
+	$pkgname-lang
+	$pkgname-systemd
+	"
 _repo_url="https://invent.kde.org/plasma/drkonqi.git"
 source="https://download.kde.org/stable/plasma/$pkgver/drkonqi-$pkgver.tar.xz"
 
@@ -61,7 +63,7 @@ build() {
 
 check() {
 	# connectiontest requires a network connection
-	ctest --test-dir build --output-on-failure -E "(connection|preamble)test"
+	ctest --test-dir build -E "(connection|preamble)test"
 }
 
 package() {
@@ -69,5 +71,5 @@ package() {
 }
 
 sha512sums="
-514af7c8d1831b9079788e4f9185c29087ce868af7c9b2a163ded07021c89deabc65013a8539f2c06949c35f66aa587f6b3388a748c8b99c19c99c99f82ef522  drkonqi-6.6.0.tar.xz
+cc93a41ec53fce77c3fbca8263e269b872f6aa8a0cd157a1aa3bf6a3e10cb530796281cb7c167efd03b1544ae8870dd8e6f3c4381eb9179bdc30df58a61f86fc  drkonqi-6.7.2.tar.xz
 "

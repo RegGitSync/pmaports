@@ -1,46 +1,49 @@
+# NOTE: Please ensure any changes made to this kernel are also applied to the
+#       4k varient.
+
 # Reference: <https://postmarketos.org/vendorkernel>
 # Kernel config based on: arch/arm64/configs/defconfig
+# Co-Maintainer: Aster Boese <asterboese@mailbox.org>
 maintainer="Nick Chan <towinchenmi@gmail.com>"
 _flavor="postmarketos-apple-16k"
 pkgname=linux-$_flavor
-pkgver=6.18.1
+pkgver=7.0.12
 pkgrel=0
 pkgdesc="Mainline kernel fork for Apple iPhone and iPad devices (16K)"
 arch="aarch64"
 _carch="arm64"
 url="https://kernel.org"
 license="GPL-2.0-only"
-options="!strip !check !tracedeps
+options="!check !strip !tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-community
+	pmb:kconfigcheck-rust
 	"
 makedepends="
 	bash
 	bc
 	bison
 	clang
+	clang-libclang
 	devicepkg-dev
+	elfutils-dev
 	flex
+	linux-headers
 	lld
 	llvm
 	openssl-dev
 	perl
 	python3
-	linux-headers
-"
-
-# Source
-_repository="HoolockLinux/linux"
-_tag="hoolock-${pkgver%.*}"
-_config="config-$_flavor.$arch"
+	rust
+	rust-bindgen
+	rustfmt
+	rust-src
+	"
 source="
-	http://github.com/$_repository/archive/refs/tags/$_tag.tar.gz
-	$_config
-	apple.config
-	pagesize.config
-	pmos.config
-"
-builddir="$srcdir/linux-$_tag"
+	https://github.com/HoolockLinux/linux/archive/refs/tags/hoolock-$pkgver.tar.gz
+	config-$_flavor.$arch
+	"
+builddir="$srcdir/linux-hoolock-$pkgver"
 
 prepare() {
 	default_prepare
@@ -54,28 +57,23 @@ build() {
 }
 
 package() {
-	mkdir -p "$pkgdir"/boot
-
-	install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
-		"$pkgdir/boot/vmlinuz"
+	install -Dm644 "$builddir"/arch/"$_carch"/boot/vmlinuz \
+		-t "$pkgdir"/boot/
 
 	make modules_install dtbs_install \
 		ARCH="$_carch" \
 		LLVM=1 \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+		INSTALL_PATH="$pkgdir"/boot
+	rm -f "$pkgdir"/usr/lib/modules/*/build "$pkgdir"/usr/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+		"$pkgdir"/usr/share/kernel/"$_flavor"/kernel.release
 }
 
 sha512sums="
-15ca1734320fdfbd839f7d154c2365928f9fb7a1d3d370e6f649ca3cb8516baf7f887a99737909246d84454524658f21fd76064852bdec8e15ea5ef4fce0812f  hoolock-6.18.tar.gz
-e637e8533a13aeb6033128ab2896410c48ff244f9c38326238dbc246907e38998dc638605011cf505e52a5d901563cda4e1fdbe0fb218d7a9c739dec27a0572e  config-postmarketos-apple-16k.aarch64
-ee09eed2017a7b0cf91a47608918addaa238daa1b91149f964d0e6fb1bcd1b133273a3f56ba7326b12ac58a2cd013366c0aa944d64b2e044d78d70b96095a740  apple.config
-038402b4a5aeffd84da8c2bc3891fb2f328cdc4671d424dd4628d9abd431bd450ead9e2652434b982adcd3264ab2f13bc7169d05fa63fa19d7f3232d3a94202e  pagesize.config
-b8896dba01003c574b18c1a98160a024cb0935c9ab6c408f71086061f7f56fa1ed8bb1f0810e524c88f3404e847a3eb038d16fd47b806670e74b8a4cb657a3fa  pmos.config
+0715d0a3ede47639c9283abd29e79dadc4c842c0396d3c539f413648db2091b164bf95b95d3e5e8db3d73f2faa2cba39ac9db2049cc6d60dd4765aeabb84814f  hoolock-7.0.12.tar.gz
+711c982ec45ad6594ae428bb486b0f1deb113838a35993c058e0bbfe76a129f7d1e02baaade51600f516a722dd6c9900966d87745d909b06ed5c0bbc7a0f7362  config-postmarketos-apple-16k.aarch64
 "

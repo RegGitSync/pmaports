@@ -2,8 +2,8 @@
 # Co-Maintainer: WeirdTreeThing <bradyn127@protonmail.com>
 maintainer="Alicja Michalska <ellyqw@mainlining.org>"
 pkgname=linux-postmarketos-qcom-sc7180
-pkgver=6.18.9
-pkgrel=0
+pkgver=6.18.26
+pkgrel=1
 pkgdesc="Mainline kernel for Qualcomm Snapdragon 7c devices"
 arch="aarch64"
 _carch="arm64"
@@ -82,6 +82,6 @@ package() {
 }
 
 sha512sums="
-f7f8e77d6badefb5fd4d7b9ce08eca1a32201906ed390c7cbd8025ec00174fec21cf6b55aae82700bc656662c7f5e86e186edfbd3125f1cae583df1d6c6313a2  linux-6.18.9.tar.xz
-f92cdfb8d04644e19e7831f964475e3b59a044c48d5a6bcdc05be6389dad3dc6122c12f3df50ea47889aa6f6ea5b093c1dec386d889013df01835ba2717c5f87  config-postmarketos-qcom-sc7180.aarch64
+8eabc8d90d59c52d15cfe4cc1eabaa558c441f6203691bb101b27e0d558c074c2dd235ad1a8a35f2f4c4f662079e5d6380e6c83526cc5c10235ab6b3c0d0f697  linux-6.18.26.tar.xz
+a9c4050b92a8967759cf624a563b92972241954b94b323c6dd7f4aa28bc9d93d784527e664b76aeae7ae3225f9deb18b79a74f695d058ebdaa4c8cdcc1c00a55  config-postmarketos-qcom-sc7180.aarch64
 "

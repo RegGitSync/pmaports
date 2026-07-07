@@ -22,21 +22,16 @@ setup_udev
 setup_usb_network
 start_unudhcpd
 
-# Splash is already running if we're loaded from initramfs-extra
-if [ "$deviceinfo_create_initfs_extra" != "true" ] && [ "$IN_CI" = "false" ]; then
+# Start splash
+if [ "$nosplash" != "y" ] && [ "$IN_CI" = "false" ]; then
 	setup_framebuffer
-	show_splash "Loading..."
+	splash_start
+	splash_set_message "Loading"
 fi
 
 setup_dynamic_partitions "${deviceinfo_super_partitions:=}"
 
 run_hooks /hooks
-
-if [ "$IN_CI" = "true" ]; then
-	echo "PMOS: CI tests done, disabling console and looping forever"
-	dmesg -n 1
-	fail_halt_boot
-fi
 
 if [ "$debug_shell" = "y" ]; then
 	debug_shell
@@ -83,12 +78,17 @@ elif [ "$debug_shell" != "y" ]; then
 fi
 
 # Make it clear that we're at the end of the initramfs
-show_splash "Starting..."
+splash_set_message "Starting"
 
 # Re-enable kmsg ratelimiting (might have been disabled for logging)
 echo ratelimit > /proc/sys/kernel/printk_devkmsg
 
-killall udevd syslogd 2>/dev/null
+# Vibrate to indicate that we are booting
+if [ "$IN_CI" != "true" ]; then
+	beebzzr &
+fi
+
+killall udevd syslogd unudhcpd 2>/dev/null
 
 # Kill any getty shells that might be running
 for pid in $(pidof sh); do

@@ -1,6 +1,6 @@
 maintainer="Clayton Craft <clayton@craftyguy.net>"
 pkgname=linux-postmarketos-asahi
-pkgver=6.18.10_p1
+pkgver=7.0.12_p1
 pkgrel=0
 _rel=${pkgver#*_p}
 _kver=${pkgver%_p*}
@@ -54,6 +54,7 @@ source="
 	config-postmarketos-asahi.aarch64
 
 	0001-nvmem-apple-spmi-nvmem-Fix-CFI-failures.patch
+	enable-dynamic-ftrace.patch
 "
 builddir="$srcdir/linux-asahi-$_asahiver"
 _defconfig="defconfig"
@@ -77,7 +78,7 @@ package() {
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir/usr" \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-asahi
 
@@ -88,7 +89,8 @@ package() {
 }
 
 sha512sums="
-599cef8475c40e5d5420c2ac87a2bfb8e9e53f47f6b2c7a6caf9ec729841d7c4e4e6f5b3241512b0aa675bff27a1ef1835eb0969417d2d19f16f1f7922daa099  linux-postmarketos-asahi-6.18.10-1.tar.gz
-ea860ea05e5045d56db49f7a299c9a52f8c3f2cac907b5dee14e8cf7ead3422d9e4bd43dbf3927b8a74127ec63f6ee81310d8b54dacba7b9745cd458c92325d7  config-postmarketos-asahi.aarch64
+4e054f227a9e2d6286c713a8287d434aee214b0c54773d55b37e5a781c8eec1ad97e73f761aee2e2b68aae4d989e04df9abad9c7e5598b84125d8ff4abb0c5ac  linux-postmarketos-asahi-7.0.12-1.tar.gz
+62de3220d7e05eed1e8f40e3fa60db2acdb43a27c8fa71bddd939b878d33d0436349b96485a19edc2f1bfcee2ba54a01f8d835187a9e9d6b4170b2c518665548  config-postmarketos-asahi.aarch64
 8d205300cfabe192b53ed1cc644b087e76421eb973e1b2a31d657e4f2676badebdfcf6b0865569c43b4b904935435f6e729c3a8d4a6221fb5792e40ec1017a0f  0001-nvmem-apple-spmi-nvmem-Fix-CFI-failures.patch
+e8b595f3e076896dc38f249c8908d58e2e6a858eaa77fe1e680f27db0e76d3d74c0b5dfebb7a4c57d546fee0b0f6eb81a38b20dfd72f985c9d02f28d79a5eceb  enable-dynamic-ftrace.patch
 "

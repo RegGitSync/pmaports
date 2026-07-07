@@ -26,8 +26,9 @@
 <!--
 	Replace space inside `[ ]` with `x` to fill the checkbox
 -->
-* [ ] edge (`master` branch)
-* [ ] `v25.12`
+* [ ] edge (`main` branch)
+* [ ] `v26.06`
+* [ ] `v25.12` (Supported until 2026-07-31)
 
 * [ ] I confirm that the issue still is present after running `sudo apk upgrade -a`
 
@@ -35,7 +36,7 @@
 #### Environments
 * [ ] COSMIC
 * [ ] GNOME Shell on Mobile
-* [ ] Phosh
+* [ ] Phosh (*Please attach the debug information of the Mobile settings app, see [this video](https://peertube.debian.social/w/4GwDjCJNcAmp8cb7dqXz1T) or use `phosh-mobile-settings -d`*)
 * [ ] Plasma Mobile
 * [ ] Sxmo (Wayland/Sway) **Please post the output of `sxmo_version.sh`**
 * [ ] Other: **Please fill out**

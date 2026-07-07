@@ -1,0 +1,60 @@
+# Reference: <https://postmarketos.org/devicepkg>
+# Co-Maintainer: Achill Gilgenast <achill@achill.org>
+# Co-Maintainer: famfo <famfo@famfo.xyz>
+maintainer="Aelin <aelin@postmarketos.org>"
+pkgname=device-generic-ppc64le
+pkgver=1
+pkgrel=0
+pkgdesc="Generic ppc64le system"
+url="https://postmarketos.org"
+arch="ppc64le"
+license="MIT"
+depends="
+	grub-ieee1275
+	postmarketos-base
+	"
+makedepends="devicepkg-dev"
+subpackages="
+	$pkgname-kernel-stable:kernel_stable
+	$pkgname-kernel-lts:kernel_lts
+	$pkgname-kernel-mainline:kernel_mainline
+	"
+
+source="
+	deviceinfo
+	kernel-cmdline.conf
+	modules-initfs
+	"
+options="!check !archcheck"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+kernel_stable() {
+	pkgdesc="Stable kernel (recommended, best balance between stability and features)"
+	depends="linux-postmarketos-stable linux-firmware-none"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_lts() {
+	pkgdesc="Long-term maintenance kernel (most stability, not all security fixes & new features)"
+	depends="linux-postmarketos-lts linux-firmware-none"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+kernel_mainline() {
+	pkgdesc="Upstream development kernel (regular breakage, latest features)"
+	depends="linux-postmarketos-mainline linux-firmware-none"
+	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+}
+
+sha512sums="
+33f6ac29d19cd9a4a8d5e94a863044746d08b5fd92ec89ca6578d2812e091a23afd454e4689bee21b8e000344a456161b642320cdb0246da13f56a5f8f8c89df  deviceinfo
+875267ce79b89ab77b7caa86f34bb942019ec0a5390a0f0a5156faa316367a59545b395a564875d2b2c48b83ebcb67c12b27895905301ac34410389333284ebd  kernel-cmdline.conf
+366ecd0c0cd37bef12de4cf01c540f4b25f67aef2555f34cf64e4c3618903f96d464444eb32bcf6d403f9ad8cd3a23be17a95b94f8e1c083629f8ee4322c9a4a  modules-initfs
+"

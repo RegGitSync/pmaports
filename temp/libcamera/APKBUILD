@@ -1,9 +1,9 @@
 # Forked from Alpine for temporary downstream patches
 maintainer="Robert Mader <robert.mader@collabora.com>"
 pkgname=libcamera
-_pkgver=0.7.0
+_pkgver=0.7.1
 pkgver=9999$_pkgver
-pkgrel=0
+pkgrel=1
 pkgdesc="Linux camera framework"
 url="https://libcamera.org/"
 arch="all"
@@ -16,7 +16,7 @@ makedepends="
 	glib-dev
 	gnutls-dev
 	graphviz
-	gst-plugins-bad-dev
+	gst-plugins-base-dev
 	gtest-dev
 	libevent-dev
 	libpisp-dev
@@ -42,6 +42,7 @@ subpackages="
 	$pkgname-gstreamer
 	$pkgname-v4l2
 	$pkgname-tools
+	py3-$pkgname-pyc:pyc
 	py3-$pkgname:py3
 	"
 _tuning_files="
@@ -50,14 +51,25 @@ _tuning_files="
 	imx363.yaml
 	imx371.yaml
 	imx376.yaml
+	imx519.yaml
 	imx858.yaml
 	s5k3l6xx.yaml
 	s5kjn1.yaml
 	"
 source="https://gitlab.freedesktop.org/camera/libcamera/-/archive/v$_pkgver/libcamera-v$_pkgver.tar.gz
-	0001-libcamera-simple-Enable-softISP-for-the-Pinephone.patch
-	0002-libcamera-simple-Skip-hwISP-formats-if-swISP-is-acti.patch
-	0003-RFC-egl-Implement-DMABuf-import-for-input-buffers.patch
+	0001-debayer_egl-Include-stats-computation-into-benchmark.patch
+	0002-debayer_egl-Sync-output-buffers-after-processing-sta.patch
+	0003-egl-Add-GL-format-parameter-to-eGLImage-constructor.patch
+	0004-egl-Remove-some-parameters-from-createTexture2D.patch
+	0005-egl-eGLImage-Add-flag-to-remember-dmabuf-import-fail.patch
+	0006-libcamera-swstats_cpu-Take-MappedFrameBuffer-in-proc.patch
+	0007-debayer_egl-Implement-dmabuf-import-for-input-buffer.patch
+	0008-libcamera-software_isp-debayer_egl-Demote-unsupporte.patch
+	0009-software_isp-debayer_egl-Request-input-buffer-alignm.patch
+	0010-egl-Log-the-GL-driver.patch
+	0011-software_isp-debayer_egl-Consider-border-for-scaling.patch
+	0012-libcamera-simple-Enable-softISP-for-the-Pinephone.patch
+	0013-libcamera-simple-Skip-hwISP-formats-if-swISP-is-acti.patch
 	qcam.desktop
 	$_tuning_files
 	"
@@ -170,16 +182,27 @@ py3() {
 }
 
 sha512sums="
-3d34792d3fd6a75a84150921b66875e4f8c5b8771e1218618fb58bee32d76b9e2b23226ef7ec850cdcd41b5bdd08ab41f61d4d69fca619a488c5ac0f1dcb283b  libcamera-v0.7.0.tar.gz
-e94ba31d69cad9ca9f9d895a253e849ac79b73bafea58987c078f9144049896138f61f3ea63a4c00de44e5a480622aed0bebe1b062d6c52757ce5f62f3a642f3  0001-libcamera-simple-Enable-softISP-for-the-Pinephone.patch
-1850f847a5a8597b78c5bf2cd88e9012531634ac7141925edf52f49fbca8c3b432a1e8d4270971741adbca150ed9928a86f86cdcb6f4ed04f5488ab21002074d  0002-libcamera-simple-Skip-hwISP-formats-if-swISP-is-acti.patch
-4ba352092bc5ed0b982efe854a7a079c363497b54b5ef5693975bd2c4d1ca0c134fb3278b60d9d77f5a87039ba2b165b5786497b7e1d74343580f2ecdc0a7049  0003-RFC-egl-Implement-DMABuf-import-for-input-buffers.patch
+0e886021a3bbd668184b581248b9d89a8e909360a7f138237a2c03b41b477cb255bd6daf4932fdebf86c3410b4deccc4c5db93264ed0c6c9969076cdbae8a77b  libcamera-v0.7.1.tar.gz
+5e936a5041f30c35f120a437a1cec65ab1d2b3ac335500566c291c7891b9ba585e6b7e4d22c54870257d161d23ef8bc5d3a99a512193f47adf41d4ae1683247a  0001-debayer_egl-Include-stats-computation-into-benchmark.patch
+a2b110357ca6b26b469e399fc49fb890efcd97ccc18c16bf715be2a2c9159c293e5f9a23d9bab97dc4a19777232340c008e5ef156699f4383fed67c6157e0e1d  0002-debayer_egl-Sync-output-buffers-after-processing-sta.patch
+00792bac0ee7aba1c2abdb1152efa86a08a06a1729c2f7aec19e647b4799ad8cac3a61fb0fc92e87f2af7c776811265e4f391ac8466b8b8a327b10dd9fe8a4f1  0003-egl-Add-GL-format-parameter-to-eGLImage-constructor.patch
+75c8adb06c23e791464cbdd8ad36607a5bc6d46fa25af7b395f628b933c2a5fbbe1c1896eb6f4cac521aef38a13b67b71659503d344fe728763d7012f78de4d4  0004-egl-Remove-some-parameters-from-createTexture2D.patch
+2afb8080916e25be93b6313f7419364ef8d02616b2e3065733ef180ebadf8ae05412c3b9b03017db711ca4460cf1bbe8c240e6502ff3b8797d7c864b0852b7c2  0005-egl-eGLImage-Add-flag-to-remember-dmabuf-import-fail.patch
+5eca6b23c73300948e743e56cb4632db774c860a580f242ba20f387353d00879f70067179eeedb1c1c2f240303af51dc63e40573fa2ef03ebca26bfce1e94c69  0006-libcamera-swstats_cpu-Take-MappedFrameBuffer-in-proc.patch
+9fc710bc0e177dcd664b1c7773e8c96dcf8bdf64ababf3f357b95d6dda2e8127ff0ee76f3d11ad01942f5a70f85ed94b78c17ef30c5639bd1c1b2b17fcdf17a4  0007-debayer_egl-Implement-dmabuf-import-for-input-buffer.patch
+df8bbbb4438821e8c61a812886f0266f54f10b4b4d490efb6564e30010b8b624671f4b257dbda34056e03b369041c1e39c75aac351ddad2c9a4b98113f3feb9b  0008-libcamera-software_isp-debayer_egl-Demote-unsupporte.patch
+8b2b8323b44d9ad45fa73862b0d7287ad9eb5f36583fb1bcbbf01ca85e2117883fde034e3314cbcbc3a73504f08c6abbb00a7e54d97f5991b3570e4e3a20925c  0009-software_isp-debayer_egl-Request-input-buffer-alignm.patch
+0cc8cb2da2a25f3c5daa4d644e05f3ba6d45717eaea9e3e19cf65ace4d0eba30df9f5c16b351a693c5db4d4c298f5c04e69aa70db1e4e11318b0bb914e90af06  0010-egl-Log-the-GL-driver.patch
+ca6dacedbd76a629539d033c028018ab5b858fcc3194787ceeda6b560d4d20dbb9b684f859ac2e40d144a77bcb2cc211c47d639ac6053cfc80cffeff3c5392b8  0011-software_isp-debayer_egl-Consider-border-for-scaling.patch
+709a610297f7d3191da404816841183094bf8deeca4f0abec63a59f0ae7b95d02b546bb6315932264f7a0a731f7e3b949eeb5d5078f7399f39b580d4ff11da66  0012-libcamera-simple-Enable-softISP-for-the-Pinephone.patch
+4482204e7a5fea2b853b8030e45fac8716b9e3fc84a16f248b778b3f10a85d956698147f04a173956f3bbf4cfdc6c12879fd8f621bd0147ecb9b3b0d2ddc3d6b  0013-libcamera-simple-Skip-hwISP-formats-if-swISP-is-acti.patch
 22167a4eceb6d1b40b0b7c45fdf116c71684f5340de7f767535cb8e160ad9d2ae0f00cb3d461f73a344520a48a4641cf46226841d78bee06bfbfd2a91337f754  qcam.desktop
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  hi846.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx355.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx363.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx371.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx376.yaml
+2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx519.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  imx858.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  s5k3l6xx.yaml
 2ee566653b17d565d2c0de67cbe6ebad25df5aac6051cad78e6bae52016fa2ca0247e964d735ac776b3e0bd447ead9c4fcb26cd7629228cdba3ceb91b46f378f  s5kjn1.yaml

@@ -29,6 +29,7 @@ deviceinfo_flash_offset_second="0xbff88000"
 deviceinfo_flash_offset_tags="0x0bc08000"
 deviceinfo_flash_pagesize="2048"
 deviceinfo_flash_sparse="true"
+deviceinfo_flash_fastboot_partition_vbmeta="vbmeta"
 
 # Required for devices using UFS as storage (instead of e.g. eMMC)
 deviceinfo_rootfs_image_sector_size="4096"

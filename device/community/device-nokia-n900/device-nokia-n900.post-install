@@ -1,6 +1,10 @@
 #!/bin/sh
 
 # Update hwdb
-udevadm hwdb --update
+if command -v systemd-hwdb; then
+	systemd-hwdb --usr --update
+else
+	udevadm hwdb --usr --update
+fi
 
 exit 0

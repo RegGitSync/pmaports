@@ -9,7 +9,7 @@
 /usr/lib/udev/rules.d/72-n900-input.rules
 
 # udev/hwdb hardware keyboard management
-/etc/udev/hwdb.bin
+/usr/lib/udev/hwdb.bin
 
 # unl0kr config for hardware keyboard
 /usr/share/unl0kr/unl0kr.conf.d/00-n900-keyboard.conf

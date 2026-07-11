@@ -1,9 +1,8 @@
-# Archived: unmaintained
 # Reference: <https://postmarketos.org/devicepkg>
-maintainer=""
+maintainer="Raymond Hackley <wonderfulshrinemaidenofparadise@postmarketos.org>"
 pkgname=device-qcom-msm8909
 pkgdesc="Generic device package for various Qualcomm MSM8905/MSM8909/MSM8916-based devices"
-pkgver=5
+pkgver=6
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -12,7 +11,8 @@ options="!check !archcheck"
 depends="
 	linux-postmarketos-qcom-msm8916
 	postmarketos-base
-	soc-qcom-msm8909
+	soc-qcom-msm8916
+	$pkgname-nonfree-firmware
 "
 makedepends="devicepkg-dev"
 source="

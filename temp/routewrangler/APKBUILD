@@ -1,0 +1,39 @@
+maintainer="Clayton Craft <clayton@craftyguy.net>"
+pkgname=routewrangler
+pkgver=0.1
+pkgrel=0
+_commit="a49e3b4424b9d4ac50707585f073dc052763eb7b"
+pkgdesc="Routing policy daemon for enforcing strict connection preferences in NetworkManager"
+url="https://gitlab.postmarketos.org/postmarketOS/routewrangler"
+arch="all"
+license="GPL-3.0-or-later"
+depends="networkmanager"
+makedepends="cargo-auditable dbus-dev"
+source="https://gitlab.postmarketos.org/postmarketOS/routewrangler/-/archive/$_commit/routewrangler-$_commit.tar.gz"
+subpackages="$pkgname-systemd"
+options="net"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	cargo fetch --target="$CHOST" --locked
+}
+
+build() {
+	cargo auditable build --release --frozen --all
+}
+
+check() {
+	cargo test --frozen
+}
+
+package() {
+	install -Dm755 target/release/routewrangler \
+		-t "$pkgdir"/usr/bin
+	install -Dm644 data/routewrangler.service \
+		-t "$pkgdir"/usr/lib/systemd/system
+}
+
+sha512sums="
+b65ecbb13ac36519eac31ba589b0f42ada7f7cc9254df4492754253f8f93d371d4d63973a29a1584441cbb9cea0e97ae2dc10f3852110b7e8ca3800e68e52a87  routewrangler-a49e3b4424b9d4ac50707585f073dc052763eb7b.tar.gz
+"

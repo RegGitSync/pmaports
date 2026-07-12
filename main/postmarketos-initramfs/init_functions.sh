@@ -351,6 +351,19 @@ setup_dynamic_partitions() {
 	done
 }
 
+# Returns 0 if the running kernel does not support losetup --direct-io=on
+# or --sector-size. Both flags are supported from kernel 4.14 onwards.
+needs_legacy_losetup() {
+	local major minor
+	major="$(uname -r | cut -d. -f1)"
+	minor="$(uname -r | cut -d. -f2)"
+	[ -z "$major" ] && return 1
+	[ -z "$minor" ] && return 1
+	[ "$major" -lt 4 ] && return 0
+	[ "$major" -eq 4 ] && [ "$minor" -lt 14 ] && return 0
+	return 1
+}
+
 mount_subpartitions() {
 	# skip if ran already (unmerged -extra)
 	if [ -n "$PMOS_ROOT" ] && [ -n "$PMOS_BOOT" ]; then
@@ -400,6 +413,12 @@ mount_subpartitions() {
 				SUBPARTITION_DEV="$partition"
 				# shellcheck disable=SC2086
 				SUBPARTITION_LOOP="$(losetup $losetup_args "$partition")"
+
+				# Fallback for kernels that do not support --direct-io=on
+				# or --sector-size (kernels older than 4.10)
+				if [ -z "$SUBPARTITION_LOOP" ] && needs_legacy_losetup; then
+					SUBPARTITION_LOOP="$(losetup --show -Pf "$partition")"
+				fi
 				if [ -z "$SUBPARTITION_LOOP" ]; then
 					echo "WARNING: failed to create loop device for $partition"
 					SUBPARTITION_DEV=""

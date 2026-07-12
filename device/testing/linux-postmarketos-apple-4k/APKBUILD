@@ -7,43 +7,47 @@
 maintainer="Aster Boese <asterboese@mailbox.org>"
 _flavor="postmarketos-apple-4k"
 pkgname=linux-$_flavor
-pkgver=7.0.12
+pkgver=7.1
 pkgrel=0
 pkgdesc="Mainline kernel fork for Apple iPhone and iPad devices (4k)"
 arch="aarch64"
 _carch="arm64"
 url="https://kernel.org"
 license="GPL-2.0-only"
-options="!check !strip !tracedeps
+options="
+	!check
+	!strip
+	!tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-community
 	pmb:kconfigcheck-rust
 	"
 makedepends="
-	bash
-	bc
 	bison
 	clang
 	clang-libclang
-	devicepkg-dev
 	elfutils-dev
 	flex
 	linux-headers
 	lld
 	llvm
 	openssl-dev
+	pahole
 	perl
+	postmarketos-installkernel
 	python3
 	rust
 	rust-bindgen
 	rustfmt
 	rust-src
+	zstd
 	"
 source="
-	https://github.com/HoolockLinux/linux/archive/refs/tags/hoolock-$pkgver.tar.gz
+	https://github.com/HoolockLinux/linux/archive/refs/tags/hoolock-$pkgver-1.tar.gz
 	config-$_flavor.$arch
+	0001-resolve_btfids-preserve-parameter-names-when-process.patch
 	"
-builddir="$srcdir/linux-hoolock-$pkgver"
+builddir="$srcdir/linux-hoolock-$pkgver-1"
 
 prepare() {
 	default_prepare
@@ -57,10 +61,7 @@ build() {
 }
 
 package() {
-	install -Dm644 "$builddir"/arch/"$_carch"/boot/vmlinuz \
-		-t "$pkgdir"/boot/
-
-	make modules_install dtbs_install \
+	make dtbs_install modules_install zinstall \
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs \
@@ -74,6 +75,7 @@ package() {
 }
 
 sha512sums="
-0715d0a3ede47639c9283abd29e79dadc4c842c0396d3c539f413648db2091b164bf95b95d3e5e8db3d73f2faa2cba39ac9db2049cc6d60dd4765aeabb84814f  hoolock-7.0.12.tar.gz
-e05c2c6e1dd8d344ee9a24aa46644415f4eb44540714a6473d0545903b0d74bd01aaf76de4fd621f37f41cff052330958ddd48a12a69831d835ca32739176fe6  config-postmarketos-apple-4k.aarch64
+2a7595341d4ceadfa579da802b0ccd0474f4caa15c18d1a3668ea783755a0c1f4c66974029b5843e3cb9201da3538879a9b4d7b1a2cda2dbf3b28b5dbfb17bbf  hoolock-7.1-1.tar.gz
+258740ffea54b2e7a10d749243a869554331b6f0b1b13f5ce3f7217e5a96d6caffc5aebb04d68f157ae87e283a736d6cb1324337cadf41749fdd08e8c175ceba  config-postmarketos-apple-4k.aarch64
+2990339876269aa2dd0a4f0dff7836da36e88a805235e71efc10cd3c5d8bd8649b4d0ce2c1cad7ced59488808726fc7b4c5a86a0f99dfaec7afeba40d551afc4  0001-resolve_btfids-preserve-parameter-names-when-process.patch
 "

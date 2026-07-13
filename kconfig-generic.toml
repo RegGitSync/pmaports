@@ -21,6 +21,12 @@ SND_SOC_CS35L41_SPI = "m"
 SND_SOC_TFA989X = "m"
 ["category:audio".">=0.0.0"."aarch64"]
 SND_SOC_WCD938X_SDW = "m"
+["category:audio".">=0.0.0"."x86 x86_64"]
+SND_HDA_INTEL = "m"
+
+["category:bluetooth".">=0.0.0"."all"]
+BT_HCIBTUSB = "m"
+BT_RFCOMM = "m"
 
 # clock controllers
 ["category:clocks".">=0.0.0"."all"]
@@ -36,7 +42,18 @@ SC_VIDEOCC_7180 = "m"
 SM_VIDEOCC_8250 = "m"
 SM_VIDEOCC_8350 = "m"
 
+# cryptography codecs and interfaces
+["category:crypto".">=0.0.0"."x86 x86_64"]
+CRYPTO_AES_NI_INTEL = "m"
+CRYPTO_DEV_CCP_DD = "m"
+HW_RANDOM = "m"
+["category:crypto".">=0.0.0"."x86_64"]
+CRYPTO_GHASH_CLMUL_NI_INTEL = "m"
+
 # ethernet controllers, etc.
+["category:ethernet".">=0.0.0"."all"]
+BT_BNEP = "m"
+IGB = "m"
 ["category:ethernet".">=7.0_rc1"."loongarch64"]
 DWMAC_MOTORCOMM = "y"
 
@@ -74,6 +91,7 @@ DRM_NOUVEAU_SIL164 = "m"
 DRM_XE = "m"
 ["category:graphics".">=0.0.0"."x86 x86_64"]
 DRM_I915 = "m"
+MXM_WMI = "m"
 ["category:graphics".">=6.19_rc1"."aarch64 armv7"]
 DRM_PANEL_SAMSUNG_S6E3FC2X01 = "m"
 DRM_PANEL_SAMSUNG_S6E8AA5X01_AMS561RA01 = "m"
@@ -97,6 +115,8 @@ TOUCHSCREEN_MELFAS_MIP4 = "m"
 TOUCHSCREEN_NOVATEK_NVT_TS = "m"
 TOUCHSCREEN_S6SY761 = "m"
 TOUCHSCREEN_ZINITIX = "m"
+["category:input".">=0.0.0"."aarch64 armv7 ppc64le x86 x86_64"]
+INPUT_PCSPKR = "m"
 ["category:input".">=0.0.0"."aarch64"]
 INPUT_MAX77693_HAPTIC = "m"
 SURFACE_HID = "m"
@@ -134,6 +154,10 @@ PPC_SUBPAGE_PROT = "y"
 CPU_HAS_LBT = "y"
 
 # Network device drivers
+["category:network".">=0.0.0"."all"]
+PACKET = "m"
+QRTR = "m"
+SCSI = "y"
 ["category:network".">=0.0.0"."aarch64 armv7"]
 RT2400PCI = "m"
 RT2500PCI = "m"
@@ -145,9 +169,14 @@ RT61PCI = "m"
 RT73USB = "m"
 RTL8187 = "m"
 RTL8723BS = "m"
+["category:network".">=0.0.0"."x86 x86_64"]
+IWLMVM = "m"
+IWLWIFI = "m"
+MAC80211 = "m"
 
 # power supplies, fuel gauges, etc.
 ["category:power".">=0.0.0"."all"]
+ACPI_BUTTON = "m"
 CHARGER_MAX77705 = "m"
 MFD_MAX77693 = "m"
 MFD_MAX77705 = "m"
@@ -166,22 +195,40 @@ REGULATOR_QCOM_LABIBB = "m"
 REGULATOR_S2DOS05 = "m"
 ["category:power"."<6.19"."aarch64"]
 EC_LENOVO_YOGA_C630 = "m"
+["category:power".">=0.0.0"."x86 x86_64"]
+ACPI_WMI = "m"
+I2C_PIIX4 = "m"
+I2C_SMBUS = "m"
+INTEL_RAPL = "m"
+INTEL_RAPL_CORE = "m"
+WMI_BMOF = "m"
 
 # remoteproc support
 ["category:remoteproc".">=0.0.0"."all"]
 REMOTEPROC = "y"
 REMOTEPROC_CDEV = "y"
 
+# sensor hardware
+["category:sensors".">=0.0.0"."x86 x86_64"]
+GIGABYTE_WMI = "m"
+SENSORS_K10TEMP = "m"
+
 # storage devices
 ["category:storage".">=0.0.0"."all"]
 BLK_DEV_NVME = "m"
 NVME_CORE = "m"
+SATA_AHCI = "m"
 ["category:storage".">=0.0.0"."x86_64"]
 VMD = "y"
 
 # Trusted Platform Modules
+["category:tpm".">=0.0.0"."all"]
+TCG_TIS = "m"
+TCG_TPM = "m"
 ["category:tpm".">=0.0.0"."aarch64 armv7"]
 TCG_TIS_I2C = "m"
+["category:tpm".">=0.0.0"."x86 x86_64"]
+TCG_ARM_CRB_FFA = "m"
 
 # EFI framebuffer support is explicitly disabled in some close-to-mainline
 # kernels, so it cannot go in kconfigcheck
@@ -195,6 +242,7 @@ QCOM_GSBI = "y"
 ["category:usb".">=0.0.0"."aarch64 armv7"]
 CHARGER_CROS_USBPD = "m"
 ["category:usb".">=0.0.0"."all"]
+ATA = "m"
 USB_SERIAL_CH341 = "m"
 
 # vhost acceleration
@@ -238,3 +286,6 @@ VIRTIO_PCI = "y"
 VSOCKETS = "m"
 ["category:virtio".">=0.0.0"."aarch64 x86 x86_64"]
 VIRTIO_IOMMU = "m"
+
+["category:watchdog".">=0.0.0"."x86 x86_64"]
+SP5100_TCO = "m"

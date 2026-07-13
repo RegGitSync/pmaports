@@ -58,7 +58,7 @@ package() {
 	# Keymap
 	install -D -m644 "$srcdir"/keymaps/us-key2.map.gz \
 		"$pkgdir"/usr/share/kbd/keymaps/us/us-key2.map.gz
-    install -D -m644 "$srcdir"/keymaps/de-key2.map.gz \
+	install -D -m644 "$srcdir"/keymaps/de-key2.map.gz \
 		"$pkgdir"/usr/share/kbd/keymaps/de/de-key2.map.gz
 	install -D -m644 "$srcdir"/keymaps/us-key2.bmap.gz \
 		"$pkgdir"/usr/share/bkeymaps/us/us-key2.bmap.gz

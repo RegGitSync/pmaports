@@ -1,0 +1,38 @@
+--- a/arch/arm64/boot/dts/qcom/sm7150-google-sunfish.dts	2026-07-13 11:41:40.193001084 -0700
++++ b/arch/arm64/boot/dts/qcom/sm7150-google-sunfish.dts	2026-07-13 11:41:40.207315793 -0700
+@@ -74,6 +74,17 @@
+ 		};
+ 	};
+ 
++	/*
++	 * Google downstream sunfish cell profiles (ATL/LSN):
++	 * 3080 mAh, 4.45 V max, 3.30 V min.
++	 */
++	battery: battery {
++		compatible = "simple-battery";
++		voltage-min-design-microvolt = <3300000>;
++		voltage-max-design-microvolt = <4450000>;
++		charge-full-design-microamp-hours = <3080000>;
++	};
++
+ 	reserved-memory {
+ 		mpss_mem: memory@8b000000 {
+ 			reg = <0x0 0x8b000000 0x0 0x9800000>;
+@@ -679,6 +690,17 @@
+ 	};
+ };
+ 
++&pm6150_charger {
++	monitored-battery = <&battery>;
++	status = "okay";
++};
++
++&pm6150_qgauge {
++	monitored-battery = <&battery>;
++	power-supplies = <&pm6150_charger>;
++	status = "okay";
++};
++
+ &pm6150_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
+ 	status = "okay";

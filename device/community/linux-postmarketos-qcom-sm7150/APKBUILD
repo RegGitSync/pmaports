@@ -4,7 +4,7 @@ maintainer="Danila Tikhonov <danila@jiaxyga.com>"
 _flavor="postmarketos-qcom-sm7150"
 pkgname=linux-$_flavor
 pkgver=7.1_rc3
-pkgrel=0
+pkgrel=1
 pkgdesc="Mainline Kernel fork for SM7150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -34,6 +34,7 @@ _tag="$pkgver"
 source="
 	$pkgname-v$_tag.tar.gz::$url/archive/v$_tag.tar.gz
 	config-$_flavor.$arch
+	0001-arm64-dts-qcom-sm7150-sunfish-enable-fuel-gauge-charger.patch
 "
 builddir="$srcdir/linux-$_tag"
 
@@ -71,4 +72,5 @@ package() {
 sha512sums="
 bb837959e337c66ff374d8f3aac6593723c4f4eb69fb18f9ff25c5c096c6656fd71149e105255c0f97c83e0bf547b0b0e94ca23eabde7b5f88308e9ecd784e3d  linux-postmarketos-qcom-sm7150-v7.1_rc3.tar.gz
 8526d7403a28e01a2a7f42411f3e244c6be8fca6aa962930b61ae8aec9d66b4a69e9ad68481bb677be36f5fef8885235689be15674b24f77ac043d715fad20df  config-postmarketos-qcom-sm7150.aarch64
+826aecb297952c078cdbf21b979f6a39d276e36193e16aafdd9dcb62ae068421e1c20c19ba5df8de881e67b602152df346da18683c99ec7bb4ebeb1402a73e93  0001-arm64-dts-qcom-sm7150-sunfish-enable-fuel-gauge-charger.patch
 "

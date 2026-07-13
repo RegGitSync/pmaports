@@ -1,24 +1,31 @@
 # Kernel config based on: arch/arm/configs/omap2plus_defconfig
 maintainer="Mithil Bavishi <bavishimithil@gmail.com>"
 pkgname=linux-postmarketos-omap
-pkgver=7.0.5
-pkgrel=2
+pkgver=7.0.14
+pkgrel=0
 pkgdesc="Mainline kernel fork for OMAP devices"
 arch="armv7"
 url="https://kernel.org/"
 license="GPL-2.0-only"
-options="!check !tracedeps pmb:cross-native pmb:kconfigcheck-community"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-community
+	"
 makedepends="
 	bash
 	bison
 	clang
+	elfutils-dev
 	findutils
 	flex
+	linux-headers
 	lld
 	llvm
 	openssl-dev
+	pahole
 	perl
 	postmarketos-installkernel
+	python3
 	xz
 	zstd
 "
@@ -83,8 +90,8 @@ package() {
 }
 
 sha512sums="
-8a1c673e5b4f7cedfc7f79d32396d54ec5d8e91c3a3c9919f3f6926f4c74560aa1a522610094f27c39a77d3b6a9c0f833a7302cb1f9582400f3af78515f57eeb  linux-7.0.5.tar.xz
-38a11eb341d7f3cf604e47f449e61c1489b31b6a02ce308890960d979c82438ddc86421c0662df1ca438dbe3b2dee1d34cc6844c75a94c93874d3e3ee1c13353  config-postmarketos-omap.armv7
+924b4a348a441e628769cbc2aadc0386a40abb9538e6c3b54730c7277b5fb7d7caf080ab2f4f0bf2e507a1b13125f5de35a532f6c3be6649f5f5d1b28cf5a375  linux-7.0.14.tar.xz
+e5d447a619d8b97bfc20f135695de03a480b173a7f615e142f94d809ea7e591682f6d3570e4e0045698c86176719f2c754748d1d7f4473142d635e09a26ac022  config-postmarketos-omap.armv7
 9a187d93885f07467ec67094621b2d762607d58622e67172bdfcd8ba5f3d6aab900ca5d233efd3d447540f9b906ba950083a35997c84b315801604e1cd5cddc3  0001-Add-TWL6032-dtsi.patch
 f7d1a87088c65278a114125e732d5bebebb560a6245afb34e003083d808ef3f8c5f49ff23131953508a6daae111ab6adfffdbcf56b79260a6d4115f859c7bb3a  0002-arm-dts-Add-common-dtsi-for-espresso.patch
 089ca0547997c7cd5d1b65924c134eb6b7703a7439729923d3639d125763412fa7e826d1cb839ac0b6cd22e614f69a3b52605a75b571e271c33f9a27ff6ac9c2  0003-arm-dts-Add-espresso7-support.patch

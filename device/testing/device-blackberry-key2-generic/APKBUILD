@@ -2,7 +2,7 @@
 maintainer="Paul Sajna <sajattack@postmarketos.org>"
 pkgname=device-blackberry-key2-generic
 pkgdesc="BlackBerry KEY2"
-pkgver=2
+pkgver=3
 pkgrel=1
 url="https://postmarketos.org"
 license="MIT"

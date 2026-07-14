@@ -371,8 +371,7 @@ udevd() {
 	# dlopened and must be explicitly listed
 	depends="kmod-libs"
 
-	# NOTE: should only be udev, but packages hardcode eudev
-	provides="eudev=$pkgver-r$pkgrel udev=$pkgver-r$pkgrel eudev-libs=$pkgver-r$pkgrel"
+	provides="udev=$pkgver-r$pkgrel eudev-libs=$pkgver-r$pkgrel"
 
 	amove usr/bin/udevadm
 	amove usr/lib/libudev*

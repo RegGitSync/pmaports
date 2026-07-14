@@ -1,0 +1,81 @@
+# Reference: <https://postmarketos.org/mainline>
+# Kernel config based on: arch/arm/configs/multi_v7_defconfig
+maintainer="knuxify <knuxify@gmail.com>"
+pkgname=linux-postmarketos-brcm-kona
+pkgver=7.1_git20260708
+pkgrel=0
+pkgdesc="Mainline kernel fork for Broadcom Kona devices"
+arch="armv7"
+_carch="arm"
+_flavor="${pkgname#linux-}"
+url="https://github.com/bcm-kona-mainline/linux"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-community
+	"
+makedepends="
+	bash
+	bc
+	bison
+	clang
+	elfutils-dev
+	findutils
+	flex
+	lld
+	llvm
+	linux-headers
+	openssl-dev
+	pahole
+	perl
+	postmarketos-installkernel
+	python3
+	xz
+	zstd
+	"
+_commit="3408464721788020a3fa9c2e87e4d3228d4a8c59"
+_defconfig="defconfig"
+_config="
+	config-$_flavor.$arch
+	kona.config
+	misc.config
+	pmos.config
+"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/bcm-kona-mainline/linux/archive/$_commit/linux-$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/linux-$_commit"
+
+prepare() {
+	default_prepare
+	cp -v "$srcdir"/config-$_flavor.$arch .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" LLVM=1 \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		LLVM=1 \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir"/usr \
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
+
+	install -D "$builddir"/include/config/kernel.release \
+				"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
+}
+
+sha512sums="
+997bc1fa703898131d6874b07987325ed8fd72584e24965075e097bb239899f60213b700a926d3dcd47f0df7ef5a353deb7faaa73b213afb158fcb91888ec847  linux-postmarketos-brcm-kona-3408464721788020a3fa9c2e87e4d3228d4a8c59.tar.gz
+db2ad88446abd00ae6101bca440d3479fd7e2122ba4f3d647f21f5fcb47f5a81d5e1bdebacbd7271ffdf7792bef3749687ae2ca86501408cb0242c31581be8b8  config-postmarketos-brcm-kona.armv7
+337507b0c6a76c12c8533f0f4dee3b1efcf52ffde2f570d613bb46ce5949a0a8199410db946e606b587b8656a8bd076be02797d785c8d49c9f7617825c5f660a  kona.config
+44dc30b56d65ce40df00b26c60a7669acf640a928c23047f099a830802b5a0c95dcffbed75f7c717da08d662eccdde824889126050b25fbcbadbb0192d9bd89c  misc.config
+9a86f9fb9135c692486ccbf08a6caa53375426f59d60a40a49e8abbeec1a91f93c59bea018d25127626ec28dbfecc1e016f368f7caab20a8f81dd0280ad4e3b6  pmos.config
+"

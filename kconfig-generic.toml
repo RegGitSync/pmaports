@@ -145,6 +145,11 @@ RT61PCI = "m"
 RT73USB = "m"
 RTL8187 = "m"
 RTL8723BS = "m"
+["category:network".">=0.0.0"."all"]
+CFG80211 = "m"
+IWLWIFI = "m"
+IWLDVM = "m"
+IWLMVM = "m"
 
 # power supplies, fuel gauges, etc.
 ["category:power".">=0.0.0"."all"]

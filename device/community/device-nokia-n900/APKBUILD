@@ -1,7 +1,7 @@
 # Reference: <https://postmarketos.org/devicepkg>
 maintainer="Danct12 <danct12@disroot.org>"
 pkgname=device-nokia-n900
-pkgver=62
+pkgver=63
 pkgrel=0
 pkgdesc="Nokia N900"
 url="https://postmarketos.org"
@@ -256,7 +256,7 @@ wayland() {
 }
 
 sha512sums="
-225536c3105169b4cdd68d8edec56fc106f0b468e1feb1aebe772d154c0dba7d3e803877e857c23e521951b45138b64e191c9fd4e9a143313dbf12402f25c229  10-initfs-input.files
+c8105072fb9e55b996ae858aebb54e2e64d4e93aed545058e840e97bc403920bf506679b305c8fed739240abe27d07ef651480a9f25b4fdf0e7a21725777af5c  10-initfs-input.files
 4656d3b3ced0a86e2d6315c89322899f646a689e9cb64609aa8ad5a676b23d93706d8a37f3be6f6b12c6b1e8501b7d26ecafecf27322333850513a6805c61910  10-initfs-keymap.sh
 3d55e34b95791636e44a5f41754f3d0de039dbba41f7a556d43a95c9e64afcfa930046b4b96b40020b6f196096ffba93514682927e32fa4488686fdd19c6da5a  backlight-enable.sh
 344ec50cee2a4d864debad12810a83070ab8257f9f07dcfa9be3eea1d8b26f3ab4fbe322fe05a384152b40fc5e1481df51d191624c7062186dd70f95a0784ea8  bq27k-options.conf

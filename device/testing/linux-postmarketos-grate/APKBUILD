@@ -2,7 +2,7 @@
 maintainer="Robert Eckelmann <longnoserob@postmarketos.org>"
 pkgname=linux-postmarketos-grate
 pkgver=7.0.1
-pkgrel=0
+pkgrel=3
 pkgdesc="Linux kernel with experimental patches for Tegra"
 arch="armv7"
 url="https://codeberg.org/libre-tegra/linux"
@@ -11,13 +11,18 @@ options="!strip !check !tracedeps pmb:cross-native pmb:kconfigcheck-community pm
 makedepends="
 	bison
 	clang
+	elfutils-dev
 	findutils
 	flex
+	libelf
+	linux-headers
 	lld
 	llvm
 	openssl-dev
+	pahole
 	perl
 	postmarketos-installkernel
+	python3
 	xz
 	zstd
 "
@@ -50,7 +55,7 @@ package() {
 		ARCH="$_carch" \
 		LLVM=1 \
 		INSTALL_PATH="$pkgdir"/boot \
-		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_PATH="$pkgdir/usr" \
 		INSTALL_MOD_STRIP=1 \
 		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
@@ -61,5 +66,5 @@ package() {
 
 sha512sums="
 fa6a723db93d0c4c799ca8fb69a37ce13cc98a80ff688bc45dea7bd6d36df05b8f0deaa15a416e271a4ea0c5bb2097e63fc2d0a02903f11e6c404fbec82718a2  linux-postmarketos-grate-stable.tar.gz
-57025e07f56dcef80ab9c79382b8acaa4428115bf5a9b7db937a346a9a383f2acf4e405fa909012c6545514c58b7990be8dd47868f694500065df9f6fd69f1d9  config-postmarketos-grate.armv7
+3a3c753bc0f49f561441f0ab2be60ba02630e4532ff8b01463c2395ca3e78dc994b51649dc3be4fa132830bc503575d94d5400d28cd1cddbaccd27e8380e69ad  config-postmarketos-grate.armv7
 "

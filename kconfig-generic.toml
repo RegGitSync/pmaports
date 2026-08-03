@@ -75,6 +75,7 @@ BACKLIGHT_PWM = "y"
 BACKLIGHT_CLASS_DEVICE = "y"
 BACKLIGHT_GPIO = "y"
 DRM_AMDGPU = "m"
+DRM_AST = "m"
 # Linux 7.2+ has an issue where the AMDGPU driver results in too large stack
 # frames on x86_64. In order to be able to compile the kernel, we raise the
 # limit.
@@ -204,6 +205,7 @@ I2C_DESIGNWARE_CORE = "y"
 I2C_DESIGNWARE_PLATFORM = "y"
 PINCTRL = "y"
 SPI_MEM = "y"
+USB_XHCI_HCD = "y"
 ["category:platform".">=0.0.0"."x86_64"]
 I2C_DESIGNWARE_AMDPSP = "y"
 PINCTRL_AMD = "y"
@@ -273,6 +275,7 @@ CHARGER_CROS_USBPD = "m"
 ["category:usb".">=0.0.0"."all"]
 USB_ACM = "m"
 USB_SERIAL_CH341 = "m"
+USB_SERIAL_PL2303 = "m"
 ["category:usb".">=0.0.0"."riscv64"]
 USB_DWC3 = "y"
 ["category:usb".">=7.0_rc1"."riscv64"]

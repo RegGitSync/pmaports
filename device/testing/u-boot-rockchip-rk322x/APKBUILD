@@ -1,7 +1,7 @@
 maintainer="leap123 <leap123@canaglie.org>"
 pkgname=u-boot-rockchip-rk322x
 pkgver=2025.07
-pkgrel=2
+pkgrel=3
 _ddr_ver=1.11
 _trust_ver=51.1.0-333-gc9d95d1
 _miniloader_ver=2.56
@@ -52,7 +52,7 @@ build() {
 }
 
 package() {
-	install -D -m755 "$srcdir"/update-u-boot "$pkgdir"/usr/sbin/update-u-boot
+	install -D -m755 "$srcdir"/update-u-boot "$pkgdir"/usr/bin/update-u-boot
 	install -Dm644 \
 		"$builddir"/idbloader.img \
 		"$builddir"/u-boot.itb \

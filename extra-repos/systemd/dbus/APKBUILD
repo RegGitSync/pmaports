@@ -1,9 +1,9 @@
 # Forked from Alpine to enable systemd
-maintainer=""
+maintainer="Achill Gilgenast <achill@achill.org>"
 pkgname=dbus
-_pkgver=1.16.2
+_pkgver=1.16.4
 pkgver=9999$_pkgver
-pkgrel=1
+pkgrel=0
 pkgdesc="Freedesktop.org message bus system"
 url="https://www.freedesktop.org/Software/dbus"
 # armhf: pmb#2618
@@ -104,5 +104,5 @@ dev() {
 }
 
 sha512sums="
-5c26f52d85984bb9ae1dde8d7e73921eacbdf020a61ff15f00a4c240cb38a121553ee04bd66e62b28425ff9bc50f4f5e15135166573ac0888332a01a0db1faa2  dbus-1.16.2.tar.xz
+edcd1102184e4a81da905a7a554531bcba74d4e037240c27b3cf1af8ed308df6ae6182fd8af0c98894c56b6d24100787893d6a86e430f4077c23c8a3a5f530a2  dbus-1.16.4.tar.xz
 "

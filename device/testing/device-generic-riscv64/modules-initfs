@@ -9,6 +9,7 @@ libata
 mbcache
 nvme
 sd_mod
+sdhci-of-k1
 sg
 uas
 usb_storage

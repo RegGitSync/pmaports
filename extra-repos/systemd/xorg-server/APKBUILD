@@ -1,7 +1,7 @@
 # Forked from Alpine to adjust dependencies for systemd
 maintainer=""
 pkgname=xorg-server
-_pkgver=21.1.23
+_pkgver=21.1.26
 pkgver=9999$_pkgver
 pkgrel=0
 pkgdesc="X.Org X servers"
@@ -62,7 +62,9 @@ makedepends="
 
 	systemd-dev
 	"
-source="https://www.x.org/releases/individual/xserver/xorg-server-$_pkgver.tar.xz"
+source="https://www.x.org/releases/individual/xserver/xorg-server-$_pkgver.tar.xz
+	int10-stub.patch
+	"
 builddir="$srcdir/xorg-server-$_pkgver"
 
 # the modesetting driver is now shipped with xorg server
@@ -161,5 +163,6 @@ common() {
 }
 
 sha512sums="
-7eae854af1b5db1f5d1e59cb9d26b86d98fa176d4f80f70935c707f17982d0446a0a8ad8d29c922edbd208435f995b027604fbb72e62a7bf3ba79f2f570aa0bb  xorg-server-21.1.23.tar.xz
+dbf13bcfc3f6bcc0d2ad201d993003d0f4e583f1eae8e39f9a4c13418ac1ce459ba3f1f79a060b98f6731839048e1962b2f03e6aaf1b03b3fa83bdfc01eddd86  xorg-server-21.1.26.tar.xz
+3f9fbffa2aaac6f463e8d8e29b04bea62dc5aa7617eff23660b40472967f609ce3aef687dda07a289d3e35a904dff7c856442e947a6d174fb77dfdd442f74b8e  int10-stub.patch
 "

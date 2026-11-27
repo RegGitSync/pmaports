@@ -1,5 +1,7 @@
+# Archived: maintainer inactivity pmaports#4873
+
 # Reference: <https://postmarketos.org/devicepkg>
-maintainer="Abdullah AL Shohag <HackerShohag@outlook.com>"
+maintainer=""
 pkgname=device-xiaomi-lancelot
 pkgdesc="Xiaomi Redmi 9"
 pkgver=4

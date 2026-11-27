@@ -24,6 +24,7 @@ community = [
 	"category:netboot",
 	"category:netmount",
 	"category:nftables",
+	"category:rust",
 	"category:usb",
 	"category:usb_gadgets",
 	"category:waydroid",

@@ -25,9 +25,9 @@ if [ -d /bin ] && [ ! -L /bin ] || \
         echo "* you can try running 'sudo merge-usr --bins --dryrun', and if"
         echo "* there are no more conflicts, 'sudo merge-usr --bins'."
         echo "* Otherwise, feel free to ask for help commenting in"
-        echo "* https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/6389"
+        echo "* https://gitlab.nura.eco/Nura/pmaports/-/merge_requests/6389"
         echo "* or"
-        echo "* https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/7885"
+        echo "* https://gitlab.nura.eco/Nura/pmaports/-/merge_requests/7885"
         exit 1
     fi
 fi

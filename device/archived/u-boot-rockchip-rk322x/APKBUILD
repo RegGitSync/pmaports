@@ -1,4 +1,6 @@
-maintainer="leap123 <leap123@canaglie.org>"
+# Archived: device archived
+
+maintainer=""
 pkgname=u-boot-rockchip-rk322x
 pkgver=2025.07
 pkgrel=3

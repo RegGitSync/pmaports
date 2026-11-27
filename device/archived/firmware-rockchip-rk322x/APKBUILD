@@ -1,4 +1,6 @@
-maintainer="leap123 <leap123@canaglie.org>"
+# Archived: device archived
+
+maintainer=""
 pkgname=firmware-rockchip-rk322x
 pkgver=2
 pkgrel=0

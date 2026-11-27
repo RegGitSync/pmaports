@@ -1,5 +1,7 @@
+# Archived: kernel archived
+
 # Reference: <https://postmarketos.org/devicepkg>
-maintainer="Yassine Oudjana (Tooniis) <y.oudjana@protonmail.com>"
+maintainer=""
 pkgname=device-xiaomi-scorpio
 pkgdesc="Xiaomi Mi Note 2"
 pkgver=11

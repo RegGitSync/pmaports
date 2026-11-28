@@ -3,7 +3,7 @@
 # Co-Maintainer: Achill Gilgenast <achill@achill.org>
 maintainer="Stefan Hansson <newbyte@postmarketos.org>"
 pkgname=gnome-shell
-_pkgver=51.0
+_pkgver=51.1
 pkgver=9999$_pkgver
 pkgrel=0
 pkgdesc="GNOME shell"
@@ -114,6 +114,6 @@ schemas() {
 }
 
 sha512sums="
-15ea0700fa803ec64c97f8d2c2d7ea9a97be4a99d2570384c3c2efb3c2ee0d3be128cff0d7aedc014c9152e8ebadb21aa86811e1d67ffe7aca6c826fb516b3c5  gnome-shell-51.0.tar.xz
+718546bcd1f129d81f8eb76a372cb6a2c62c648ba6a1ae0bd66d5810b959d5ec1f8f729f4aa6b44e65619e896b9981188ad9544944d40057a62e833f297ede67  gnome-shell-51.1.tar.xz
 ae4ac679bacd35948b44068e5a70407f473bd96986ee126abb1bdf066db5cbc2087a3ffae0b390286689cacbe8325870fd43663ba39f4f7543216e02bf083934  gsh.patch
 "

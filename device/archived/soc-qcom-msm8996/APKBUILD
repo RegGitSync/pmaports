@@ -1,4 +1,6 @@
-maintainer="Yassine Oudjana (Tooniis) <y.oudjana@protonmail.com>"
+# Archived: depending device archived
+
+maintainer=""
 pkgname=soc-qcom-msm8996
 pkgdesc="Common package for Qualcomm MSM8996 devices"
 pkgver=4

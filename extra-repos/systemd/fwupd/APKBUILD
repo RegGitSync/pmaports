@@ -2,9 +2,9 @@
 
 maintainer="Clayton Craft <clayton@craftyguy.net>"
 pkgname=fwupd
-_pkgver=2.1.6
+_pkgver=2.1.10
 pkgver=9999$_pkgver
-pkgrel=1
+pkgrel=0
 pkgdesc="Firmware update daemon"
 url="https://fwupd.org/"
 arch="all"
@@ -152,5 +152,5 @@ tests() {
 }
 
 sha512sums="
-ac6400017df913b96f0df2616ffe92d4eeb4bf97d2c33fa1fe6ed8f5aba86438418d56db0b1e54a9977cb729b35c23c2010d778ef37486d0ed7058640e9c35d0  fwupd-2.1.6.tar.xz
+88a787fdc17dc54f8b557f0540f86ce643351b16308102fea056afb2c0e4a5320ed9f2382c78a30210a47f061e650f25dc22c4927a55ce31209506f7726faef4  fwupd-2.1.10.tar.xz
 "

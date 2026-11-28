@@ -1,11 +1,10 @@
 # longaarch64 only - related issue: https://gitlab.freedesktop.org/upower/upower/-/issues/195
 diff --git a/src/up-self-test.c b/src/up-self-test.c
-index f60618f..3f39c12 100644
 --- a/src/up-self-test.c
 +++ b/src/up-self-test.c
-@@ -172,20 +172,20 @@ up_test_history_func (void)
- 	up_history_set_time_empty_data (history, 12346);
+@@ -183,22 +183,22 @@
  	up_history_set_time_full_data (history, 54322);
+ 	up_history_set_voltage_data (history, 3.7f);
  
 -	g_usleep (2 * G_USEC_PER_SEC);
 +	g_usleep (5 * G_USEC_PER_SEC);
@@ -13,6 +12,7 @@ index f60618f..3f39c12 100644
  	up_history_set_rate_data (history, 1.00f);
  	up_history_set_time_empty_data (history, 12345);
  	up_history_set_time_full_data (history, 54321);
+ 	up_history_set_voltage_data (history, 3.9f);
  
 -	g_usleep (2 * G_USEC_PER_SEC);
 +	g_usleep (5 * G_USEC_PER_SEC);
@@ -20,6 +20,7 @@ index f60618f..3f39c12 100644
  	up_history_set_rate_data (history, 1.01f);
  	up_history_set_time_empty_data (history, 12344);
  	up_history_set_time_full_data (history, 54320);
+ 	up_history_set_voltage_data (history, 4.1f);
  
 -	/* get data for last 10 seconds */
 -	array = up_history_get_data (history, UP_HISTORY_TYPE_CHARGE, 10, 100);
@@ -28,7 +29,7 @@ index f60618f..3f39c12 100644
  	g_assert (array != NULL);
  	g_assert_cmpint (array->len, ==, 3);
  
-@@ -212,7 +212,7 @@ up_test_history_func (void)
+@@ -225,7 +225,7 @@
          /* request fewer items than we have in our history; should have the
           * same order: first one is the most recent, and the data gets
           * interpolated */
@@ -37,7 +38,7 @@ index f60618f..3f39c12 100644
  	g_assert (array != NULL);
  	g_assert_cmpint (array->len, ==, 2);
  
-@@ -242,8 +242,8 @@ up_test_history_func (void)
+@@ -255,8 +255,8 @@
  	up_history_set_directory (history, history_dir);
  	up_history_set_id (history, "test");
  
@@ -48,7 +49,7 @@ index f60618f..3f39c12 100644
  	g_assert (array != NULL);
  	g_assert_cmpint (array->len, ==, 4); /* we have inserted an unknown as the first entry */
  	item = g_ptr_array_index (array, 1);
-@@ -253,17 +253,23 @@ up_test_history_func (void)
+@@ -266,17 +266,23 @@
  	g_ptr_array_unref (array);
  
  	/* ensure old entries are purged */
@@ -76,4 +77,3 @@ index f60618f..3f39c12 100644
  	g_ptr_array_unref (array);
  
  	/* unref */
-

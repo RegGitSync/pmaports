@@ -1,6 +1,8 @@
+# Archived: all depending devices are archived
+
 # Mainline Linux kernel fork with patches for MediaTek MT6768 devices
 # Kernel config based on: arch/arm64/configs/mt6768_defconfig
-maintainer="Abdullah AL Shohag <HackerShohag@outlook.com>"
+maintainer=""
 _flavor="postmarketos-mediatek-mt6768"
 pkgname=linux-$_flavor
 pkgver=6.16.0

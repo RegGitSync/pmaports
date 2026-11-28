@@ -1,5 +1,7 @@
+# Archived: maintainer inactivity pmaports#5017
+
 # Kernel config based on: arch/arm64/configs/defconfig
-maintainer="Yassine Oudjana (Tooniis) <y.oudjana@protonmail.com>"
+maintainer=""
 _flavor="postmarketos-qcom-msm8996"
 pkgname=linux-$_flavor
 pkgver=6.19.5

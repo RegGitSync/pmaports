@@ -1,7 +1,9 @@
-maintainer="leap123 <leap123@canaglie.org>"
+# Archived: device archived
+
+maintainer=""
 pkgname=u-boot-rockchip-rk322x
 pkgver=2025.07
-pkgrel=1
+pkgrel=3
 _ddr_ver=1.11
 _trust_ver=51.1.0-333-gc9d95d1
 _miniloader_ver=2.56
@@ -29,7 +31,7 @@ makedepends="
 _rkbin_commit="84f2356cf510319665874daf29df9ad8a94ac7e4"
 builddir="$srcdir"/u-boot-$pkgver
 source="
-	https://ftp.denx.de/pub/u-boot/u-boot-${pkgver//_/-}.tar.bz2
+	https://git.u-boot-project.org/u-boot/u-boot/-/releases/v$pkgver/downloads/u-boot-$pkgver.tar.bz2
 	https://github.com/ilmich/rkbin/raw/$_rkbin_commit/rk32/rk322x_ddr_330MHz_v$_ddr_ver.bin
 	https://github.com/ilmich/rkbin/raw/$_rkbin_commit/rk32/rk3228_tee_ta-$_trust_ver.bin
 	https://github.com/ilmich/rkbin/raw/$_rkbin_commit/rk32/rk322x_miniloader_v$_miniloader_ver.bin
@@ -37,6 +39,7 @@ source="
 	0001-rk322x-defconfig-dts.patch
 	0002-rockchip-boot-order-usb.patch
 	0003-python-3.13-binman-migrate-from-pkg_resources-to-imp.patch
+	0004-pylibfmt-Replace-removed-SWIG-Python-2-compatibility.patch
 "
 
 build() {
@@ -51,7 +54,7 @@ build() {
 }
 
 package() {
-	install -D -m755 "$srcdir"/update-u-boot "$pkgdir"/usr/sbin/update-u-boot
+	install -D -m755 "$srcdir"/update-u-boot "$pkgdir"/usr/bin/update-u-boot
 	install -Dm644 \
 		"$builddir"/idbloader.img \
 		"$builddir"/u-boot.itb \
@@ -67,4 +70,5 @@ ec6024ee74b501d97640527496ae530eb4d115b59a0303b6deb7c954f85881e5e1731e6a4694bf89
 d749ef1c9ffb454efe66848ca820472c695631673327e81eb4091ba06ba862971566e9d566c456b06dd8630ce7138e91cf1f3dffd00d143db6acbdaa7c8d09c8  0001-rk322x-defconfig-dts.patch
 9316278dfd60a35d4126160430b2f21ab8a4ae5c90883134dcf884325726e0a0a973f8a78dbcc1a4c515590bba33eb5b83df81930fba1ad390b9dd0ce89bf81b  0002-rockchip-boot-order-usb.patch
 c0545c6a1d17507f7e4bc337200fa3a4a1a89d62122cc6599ea00f27187b85f3e322d945683a84cdff98d981cf604187ded05d7b93bb5fae5a3fe7f9751077a2  0003-python-3.13-binman-migrate-from-pkg_resources-to-imp.patch
+c2d2a801d12a3b11abf2202c0f46dceab69c4b2302d024fe2af1342fd764aab766269ec066ce57c0a3f436292bf107155012076c9a2de4cd7eccf72144dc42ca  0004-pylibfmt-Replace-removed-SWIG-Python-2-compatibility.patch
 "

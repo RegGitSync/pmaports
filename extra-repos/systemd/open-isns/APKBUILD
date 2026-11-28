@@ -1,9 +1,9 @@
 # Forked from Alpine for providing a version with systemd
 maintainer="Robert Eckelmann <longnoserob@postmarketos.org>"
 pkgname=open-isns
-_pkgver=0.102
+_pkgver=0.103
 pkgver=9999$_pkgver
-pkgrel=2
+pkgrel=0
 pkgdesc="iSNS server and client for Linux"
 url="https://github.com/open-iscsi/open-isns"
 arch="all"
@@ -34,5 +34,5 @@ lib() {
 }
 
 sha512sums="
-f5ae8af89b85565181c2f6def9834d9dab0a15d5d9b28721cce116c5580173ed9adba219e1ede48988cb57f047578db4ece458c4a7db598412c7583e56393d2b  open-isns-0.102.tar.gz
+219dd4f7e0a8459f5acaf2036fc737b90604cdcfe78b5492d50e4826744923afe35c9c331b3e39aa7c9bb5ebb2c378c464dced204d51da46e2b7474c6ca94057  open-isns-0.103.tar.gz
 "

@@ -1,9 +1,9 @@
 # Forked from Alpine for systemd support
 maintainer="Achill Gilgenast <achill@achill.org>"
 pkgname=upower
-_pkgver=1.91.0
+_pkgver=1.91.5
 pkgver=9999$_pkgver
-pkgrel=2
+pkgrel=0
 pkgdesc="Power Management Services"
 url="https://upower.freedesktop.org"
 # armhf: pmb#2618
@@ -66,6 +66,6 @@ package() {
 }
 
 sha512sums="
-32801d3ee4c5086221a9f12062b0f2e6765b239f68a562c24ef7808999bb34e299e6acd31acf5c414cf41613709c97b20ad64d252e1d8ddf23183576b156cf93  upower-v1.91.0.tar.bz2
-1b582f31660b82444682b6786913a6eb4e8e13c8370205b31da1bf9328e0d2e62c2596bfb4e82faf25e658f379ddb92d7f3f97ec8ddfdb512339d4d3d663f708  0001-fix-self-test-sleep-duration.patch
+b6bc705db933c1f34ff77765df270d0bd8c4e0d25fff0d661937783785c1ab9a832d89e0118331e41cf6b3e0b26f87d97b1db4484fcc7086d2b0ebcbb31adf3d  upower-v1.91.5.tar.bz2
+ac9a2cd6da2792e129aa69318e0ef8dfd67bc8a8e3b241a4d308ba0398fc4796a7032889565ac45e315a540ab98bdad9dd5b8dddc57bf12c585875eed0efda8f  0001-fix-self-test-sleep-duration.patch
 "

@@ -1,4 +1,6 @@
-maintainer="leap123 <leap123@canaglie.org>"
+# Archived: maintainer inactivity pmaports#4815
+
+maintainer=""
 pkgname=linux-postmarketos-rockchip-rk322x
 pkgver=6.16.5
 pkgrel=1
